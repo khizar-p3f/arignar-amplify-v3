@@ -1,0 +1,15 @@
+{
+  "resourceName": "s3storage",
+  "policyUUID": "876e8dd8",
+  "bucketName": "arignar-assets",
+  "storageAccess": "auth",  
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "groupAccess": {}
+}

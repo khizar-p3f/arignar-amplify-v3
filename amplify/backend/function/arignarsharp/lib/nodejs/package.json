@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install --arch=x64 --platform=linux --libc=glibc sharp"
+  },
+  "dependencies": {
+    "sharp": "^0.32.5"
+  }
+}

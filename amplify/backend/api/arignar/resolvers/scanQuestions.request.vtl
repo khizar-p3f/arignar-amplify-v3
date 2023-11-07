@@ -1,0 +1,6 @@
+#set( $identityValue = $util.defaultIfNull($ctx.identity.claims.get("username"), $util.defaultIfNull($ctx.identity.claims.get("cognito:username"), "___xamznone____")) )
+#set( $ScanRequest = {
+"version": "2017-02-28",
+  "operation": "Scan"
+} )
+$util.toJson($ScanRequest)

@@ -1,0 +1,60 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-arignar-dev-193036-authRole",
+      "UnauthRoleArn": "arn:aws:iam::317877151524:role/amplify-arignar-dev-193036-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::317877151524:role/amplify-arignar-dev-193036-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-arignar-dev-193036-deployment",
+      "UnauthRoleName": "amplify-arignar-dev-193036-unauthRole",
+      "StackName": "amplify-arignar-dev-193036",
+      "StackId": "arn:aws:cloudformation:us-east-1:317877151524:stack/amplify-arignar-dev-193036/68bfdd90-21c2-11ed-aea3-1277a47e4127",
+      "AmplifyAppId": "d1zj74z1lhdxi3",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-arignar-dev-193036-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-arignar-dev-193036-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "function": {
+        "DallEImage": {
+          "secretsPathAmplifyAppId": "d1zj74z1lhdxi3",
+          "deploymentBucketName": "amplify-arignar-dev-193036-deployment",
+          "s3Key": "amplify-builds/DallEImage-4a7532752b594d34656a-build.zip"
+        },
+        "arignar7efbb43fPostConfirmation": {
+          "GROUP": "schoolteacher",
+          "deploymentBucketName": "amplify-arignar-dev-193036-deployment",
+          "s3Key": "amplify-builds/arignar7efbb43fPostConfirmation-5267356b493835343368-build.zip"
+        },
+        "AdminQueriesa5dfd792": {
+          "deploymentBucketName": "amplify-arignar-dev-193036-deployment",
+          "s3Key": "amplify-builds/AdminQueriesa5dfd792-377a7a32566c55485367-build.zip"
+        },
+        "AudioManager": {
+          "deploymentBucketName": "amplify-arignar-dev-193036-deployment",
+          "s3Key": "amplify-builds/AudioManager-46536564423173343348-build.zip"
+        },
+        "arignarTextToSpeech": {
+          "deploymentBucketName": "amplify-arignar-dev-193036-deployment",
+          "s3Key": "amplify-builds/arignarTextToSpeech-LambdaLayerVersionab659278-build.zip"
+        },
+        "arignarsharp": {
+          "deploymentBucketName": "amplify-arignar-dev-193036-deployment",
+          "s3Key": "amplify-builds/arignarsharp-LambdaLayerVersionba73bb1f-build.zip"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1zj74z1lhdxi3",
+          "type": "manual"
+        }
+      },
+      "auth": {
+        "arignar7efbb43f": {},
+        "userPoolGroups": {}
+      },
+      "storage": {
+        "s3storage": {}
+      }
+    }
+  }
+}

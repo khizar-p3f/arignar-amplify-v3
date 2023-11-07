@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "paths": {
+    "/audio": {
+      "name": "/audio",
+      "lambdaFunction": "AudioManager",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update"
+        ]
+      }
+    },
+    "/images": {
+      "name": "/images",
+      "lambdaFunction": "DallEImage",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read"
+        ]
+      }
+    }
+  }
+}
