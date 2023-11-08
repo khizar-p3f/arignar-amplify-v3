@@ -19,6 +19,7 @@
 	"homepage": "https://github.com/khizar-p3f/arignar-amplify-v3#readme",
 	"dependencies": {
 		"@aws-amplify/datastore": "^4.7.5",
+		"@aws-amplify/ui-react": "^5.3.1",
 		"@gatsbyjs/reach-router": "^1.3.9",
 		"@reduxjs/toolkit": "^1.9.7",
 		"ajv": "^8.12.0",

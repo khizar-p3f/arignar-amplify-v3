@@ -1,37 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isLoggedin: false,
-  agents: []
-
-}
+	isLoggedin: false,
+	role: "student",
+};
 
 export const userSlice = createSlice({
-  name: 'user',
-  initialState,
-  reducers: {
-    logoutUser: (state, action) => {
-      return {
-        isLoggedin: false,
-        agents: []
-      }
-    },
-    updateUser: (state, action) => {
-      return {
-        ...state,
-        isLoggedin: true,
-        ...action.payload
-      }
-    },
-    updateAgentsList: (state, action) => {
-      return {
-        ...state,
-        agents: action.payload
-      }
-    },
-  },
-})
+	name: "user",
+	initialState,
+	reducers: {
+		logoutUserReducer: () => {
+			return {
+				isLoggedin: false,
+			};
+		},
+		updateUserReducer: (state, action) => {
+			return {
+				isLoggedin: true,
+				...action.payload,
+			};
+		},
+	},
+});
 // Action creators are generated for each case reducer function
-export const { updateUser, updateAgentsList,logoutUser } = userSlice.actions
+export const { updateUserReducer, logoutUserReducer } = userSlice.actions;
 
-export default userSlice.reducer
+export default userSlice.reducer;

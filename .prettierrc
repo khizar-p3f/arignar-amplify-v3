@@ -1,44 +1,51 @@
 {
-  "arrowParens": "always",
-  "bracketSpacing": true,
-  "endOfLine": "lf",
-  "insertPragma": false,
-  "singleAttributePerLine": false,
-  "bracketSameLine": false,
-  "jsxBracketSameLine": false,
-  "jsxSingleQuote": false,
-  "printWidth": 120,
-  "proseWrap": "preserve",
-  "quoteProps": "as-needed",
-  "requirePragma": false,
-  "semi": true,
-  "singleQuote": false,
-  "tabWidth": 2,
-  "trailingComma": "es5",
-  "useTabs": true,
-  "embeddedLanguageFormatting": "auto",
-  "vueIndentScriptAndStyle": false,
-  "parser": "babel",
-  "overrides": [
-    {
-      "files": ["*.css", "*.scss", "*.less"], 
-      "options": {
-        "parser": "css",
-        "tabWidth": 2
-      }
-    },
-    {
+	"arrowParens": "always",
+	"bracketSpacing": true,
+	"endOfLine": "lf",
+	"insertPragma": false,
+	"singleAttributePerLine": false,
+	"bracketSameLine": false,
+	"jsxBracketSameLine": false,
+	"jsxSingleQuote": false,
+	"printWidth": 120,
+	"proseWrap": "preserve",
+	"quoteProps": "as-needed",
+	"requirePragma": false,
+	"semi": true,
+	"singleQuote": false,
+	"tabWidth": 2,
+	"trailingComma": "es5",
+	"useTabs": true,
+	"embeddedLanguageFormatting": "auto",
+	"vueIndentScriptAndStyle": false,
+	"parser": "babel",
+	"overrides": [
+		{
+			"files": ["*.css", "*.scss", "*.less"],
+			"options": {
+				"parser": "css",
+				"tabWidth": 2
+			}
+		},
+		{
+			"files": ["*.graphql", "*.gql"],
+			"options": {
+				"parser": "graphql",
+				"tabWidth": 4,
+				"singleQuote": false
+			}
+		},
+		{
 			"files": ["*.html"],
 			"options": {
 				"parser": "html"
 			}
 		},
-    {
-			"files": ["*.json", "*.jsonc", "*.json5"],
+		{
+			"files": ["*.json", "*.jsonc", "*.json5", ".prettierrc", ".eslintrc", ".babelrc"],
 			"options": {
 				"parser": "json"
 			}
 		}
-  ]
-
+	]
 }
