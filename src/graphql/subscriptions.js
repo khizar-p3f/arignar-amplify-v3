@@ -12,12 +12,14 @@ export const onCreateUsers = /* GraphQL */ `
       NoOfProfiles
       Profiles {
         nextToken
+        __typename
       }
       LastLogin
       id
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -32,12 +34,14 @@ export const onUpdateUsers = /* GraphQL */ `
       NoOfProfiles
       Profiles {
         nextToken
+        __typename
       }
       LastLogin
       id
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -52,12 +56,14 @@ export const onDeleteUsers = /* GraphQL */ `
       NoOfProfiles
       Profiles {
         nextToken
+        __typename
       }
       LastLogin
       id
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -76,6 +82,7 @@ export const onCreateProfile = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        __typename
       }
       Name
       Age
@@ -87,6 +94,7 @@ export const onCreateProfile = /* GraphQL */ `
       updatedAt
       usersProfilesId
       owner
+      __typename
     }
   }
 `;
@@ -105,6 +113,7 @@ export const onUpdateProfile = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        __typename
       }
       Name
       Age
@@ -116,6 +125,7 @@ export const onUpdateProfile = /* GraphQL */ `
       updatedAt
       usersProfilesId
       owner
+      __typename
     }
   }
 `;
@@ -134,6 +144,7 @@ export const onDeleteProfile = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        __typename
       }
       Name
       Age
@@ -145,230 +156,197 @@ export const onDeleteProfile = /* GraphQL */ `
       updatedAt
       usersProfilesId
       owner
+      __typename
     }
   }
 `;
-export const onCreateQuestion = /* GraphQL */ `
-  subscription OnCreateQuestion($filter: ModelSubscriptionQuestionFilterInput) {
-    onCreateQuestion(filter: $filter) {
+export const onCreateSubject = /* GraphQL */ `
+  subscription OnCreateSubject($filter: ModelSubscriptionSubjectFilterInput) {
+    onCreateSubject(filter: $filter) {
       id
       Name
-      LocalizedName
-      LocalizedDescription
-      LocalizedAudioDescription
-      chapterID
-      ChapterObj {
+      Description
+      IsActive
+      IsPremium
+      IsTest
+      Locale
+      Levels {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      teacherSubjectsId
+      schoolSubjectsId
+      __typename
+    }
+  }
+`;
+export const onUpdateSubject = /* GraphQL */ `
+  subscription OnUpdateSubject($filter: ModelSubscriptionSubjectFilterInput) {
+    onUpdateSubject(filter: $filter) {
+      id
+      Name
+      Description
+      IsActive
+      IsPremium
+      IsTest
+      Locale
+      Levels {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      teacherSubjectsId
+      schoolSubjectsId
+      __typename
+    }
+  }
+`;
+export const onDeleteSubject = /* GraphQL */ `
+  subscription OnDeleteSubject($filter: ModelSubscriptionSubjectFilterInput) {
+    onDeleteSubject(filter: $filter) {
+      id
+      Name
+      Description
+      IsActive
+      IsPremium
+      IsTest
+      Locale
+      Levels {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      teacherSubjectsId
+      schoolSubjectsId
+      __typename
+    }
+  }
+`;
+export const onCreateLevel = /* GraphQL */ `
+  subscription OnCreateLevel($filter: ModelSubscriptionLevelFilterInput) {
+    onCreateLevel(filter: $filter) {
+      id
+      Name
+      subjectID
+      SubjectObj {
         id
         Name
-        levelID
         Description
         IsActive
         IsPremium
         IsTest
-        LocalizedName
-        ChapterOrder
-        LocalizedDescription
+        Locale
         createdAt
         updatedAt
+        teacherSubjectsId
+        schoolSubjectsId
+        __typename
       }
       Description
       IsActive
       IsPremium
       IsTest
-      Type
-      Skill
-      QuestionObject
-      QuestionOrder
-      NoOfQuestions
-      SuggestedRewardPoints
-      PassPercentage
-      Version
-      TimeAllowed
+      LocalizedName
+      LocalizedDescription
+      Chapters {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
-export const onUpdateQuestion = /* GraphQL */ `
-  subscription OnUpdateQuestion($filter: ModelSubscriptionQuestionFilterInput) {
-    onUpdateQuestion(filter: $filter) {
+export const onUpdateLevel = /* GraphQL */ `
+  subscription OnUpdateLevel($filter: ModelSubscriptionLevelFilterInput) {
+    onUpdateLevel(filter: $filter) {
       id
       Name
-      LocalizedName
-      LocalizedDescription
-      LocalizedAudioDescription
-      chapterID
-      ChapterObj {
+      subjectID
+      SubjectObj {
         id
         Name
-        levelID
         Description
         IsActive
         IsPremium
         IsTest
-        LocalizedName
-        ChapterOrder
-        LocalizedDescription
+        Locale
         createdAt
         updatedAt
+        teacherSubjectsId
+        schoolSubjectsId
+        __typename
       }
       Description
       IsActive
       IsPremium
       IsTest
-      Type
-      Skill
-      QuestionObject
-      QuestionOrder
-      NoOfQuestions
-      SuggestedRewardPoints
-      PassPercentage
-      Version
-      TimeAllowed
+      LocalizedName
+      LocalizedDescription
+      Chapters {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
-export const onDeleteQuestion = /* GraphQL */ `
-  subscription OnDeleteQuestion($filter: ModelSubscriptionQuestionFilterInput) {
-    onDeleteQuestion(filter: $filter) {
+export const onDeleteLevel = /* GraphQL */ `
+  subscription OnDeleteLevel($filter: ModelSubscriptionLevelFilterInput) {
+    onDeleteLevel(filter: $filter) {
       id
       Name
-      LocalizedName
-      LocalizedDescription
-      LocalizedAudioDescription
-      chapterID
-      ChapterObj {
+      subjectID
+      SubjectObj {
         id
         Name
-        levelID
         Description
         IsActive
         IsPremium
         IsTest
-        LocalizedName
-        ChapterOrder
-        LocalizedDescription
+        Locale
         createdAt
         updatedAt
+        teacherSubjectsId
+        schoolSubjectsId
+        __typename
       }
       Description
       IsActive
       IsPremium
       IsTest
-      Type
-      Skill
-      QuestionObject
-      QuestionOrder
-      NoOfQuestions
-      SuggestedRewardPoints
-      PassPercentage
-      Version
-      TimeAllowed
+      LocalizedName
+      LocalizedDescription
+      Chapters {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
-export const onCreateLesson = /* GraphQL */ `
-  subscription OnCreateLesson(
-    $filter: ModelSubscriptionLessonFilterInput
+export const onCreateChapter = /* GraphQL */ `
+  subscription OnCreateChapter(
+    $filter: ModelSubscriptionChapterFilterInput
     $owner: String
   ) {
-    onCreateLesson(filter: $filter, owner: $owner) {
+    onCreateChapter(filter: $filter, owner: $owner) {
       id
       Name
-      LocalizedName
-      LocalizedDescription
-      LocalizedAudioDescription
-      chapterID
-      ChapterObj {
+      levelID
+      LevelObj {
         id
         Name
-        levelID
-        Description
-        IsActive
-        IsPremium
-        IsTest
-        LocalizedName
-        ChapterOrder
-        LocalizedDescription
-        createdAt
-        updatedAt
-      }
-      Description
-      IsActive
-      IsPremium
-      IsTest
-      LessonOrder
-      Type
-      Skill
-      LessonObject
-      Version
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onUpdateLesson = /* GraphQL */ `
-  subscription OnUpdateLesson(
-    $filter: ModelSubscriptionLessonFilterInput
-    $owner: String
-  ) {
-    onUpdateLesson(filter: $filter, owner: $owner) {
-      id
-      Name
-      LocalizedName
-      LocalizedDescription
-      LocalizedAudioDescription
-      chapterID
-      ChapterObj {
-        id
-        Name
-        levelID
-        Description
-        IsActive
-        IsPremium
-        IsTest
-        LocalizedName
-        ChapterOrder
-        LocalizedDescription
-        createdAt
-        updatedAt
-      }
-      Description
-      IsActive
-      IsPremium
-      IsTest
-      LessonOrder
-      Type
-      Skill
-      LessonObject
-      Version
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onDeleteLesson = /* GraphQL */ `
-  subscription OnDeleteLesson(
-    $filter: ModelSubscriptionLessonFilterInput
-    $owner: String
-  ) {
-    onDeleteLesson(filter: $filter, owner: $owner) {
-      id
-      Name
-      LocalizedName
-      LocalizedDescription
-      LocalizedAudioDescription
-      chapterID
-      ChapterObj {
-        id
-        Name
-        levelID
+        subjectID
         Description
         IsActive
         IsPremium
@@ -377,6 +355,7 @@ export const onDeleteLesson = /* GraphQL */ `
         LocalizedDescription
         createdAt
         updatedAt
+        __typename
       }
       Description
       IsActive
@@ -385,15 +364,111 @@ export const onDeleteLesson = /* GraphQL */ `
       LocalizedName
       ChapterOrder
       LocalizedDescription
+      LocalizedAudioDescription
       Questions {
         nextToken
+        __typename
       }
       Lessons {
         nextToken
+        __typename
       }
       createdAt
       updatedAt
       owner
+      __typename
+    }
+  }
+`;
+export const onUpdateChapter = /* GraphQL */ `
+  subscription OnUpdateChapter(
+    $filter: ModelSubscriptionChapterFilterInput
+    $owner: String
+  ) {
+    onUpdateChapter(filter: $filter, owner: $owner) {
+      id
+      Name
+      levelID
+      LevelObj {
+        id
+        Name
+        subjectID
+        Description
+        IsActive
+        IsPremium
+        IsTest
+        LocalizedName
+        LocalizedDescription
+        createdAt
+        updatedAt
+        __typename
+      }
+      Description
+      IsActive
+      IsPremium
+      IsTest
+      LocalizedName
+      ChapterOrder
+      LocalizedDescription
+      LocalizedAudioDescription
+      Questions {
+        nextToken
+        __typename
+      }
+      Lessons {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeleteChapter = /* GraphQL */ `
+  subscription OnDeleteChapter(
+    $filter: ModelSubscriptionChapterFilterInput
+    $owner: String
+  ) {
+    onDeleteChapter(filter: $filter, owner: $owner) {
+      id
+      Name
+      levelID
+      LevelObj {
+        id
+        Name
+        subjectID
+        Description
+        IsActive
+        IsPremium
+        IsTest
+        LocalizedName
+        LocalizedDescription
+        createdAt
+        updatedAt
+        __typename
+      }
+      Description
+      IsActive
+      IsPremium
+      IsTest
+      LocalizedName
+      ChapterOrder
+      LocalizedDescription
+      LocalizedAudioDescription
+      Questions {
+        nextToken
+        __typename
+      }
+      Lessons {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      owner
+      __typename
     }
   }
 `;
@@ -420,9 +495,11 @@ export const onCreateQuestion = /* GraphQL */ `
         LocalizedName
         ChapterOrder
         LocalizedDescription
+        LocalizedAudioDescription
         createdAt
         updatedAt
         owner
+        __typename
       }
       Description
       IsActive
@@ -440,6 +517,7 @@ export const onCreateQuestion = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -466,9 +544,11 @@ export const onUpdateQuestion = /* GraphQL */ `
         LocalizedName
         ChapterOrder
         LocalizedDescription
+        LocalizedAudioDescription
         createdAt
         updatedAt
         owner
+        __typename
       }
       Description
       IsActive
@@ -486,6 +566,7 @@ export const onUpdateQuestion = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -512,9 +593,11 @@ export const onDeleteQuestion = /* GraphQL */ `
         LocalizedName
         ChapterOrder
         LocalizedDescription
+        LocalizedAudioDescription
         createdAt
         updatedAt
         owner
+        __typename
       }
       Description
       IsActive
@@ -532,6 +615,7 @@ export const onDeleteQuestion = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -558,15 +642,17 @@ export const onCreateLesson = /* GraphQL */ `
         LocalizedName
         ChapterOrder
         LocalizedDescription
+        LocalizedAudioDescription
         createdAt
         updatedAt
         owner
+        __typename
       }
       Description
       IsActive
       IsPremium
       IsTest
-      showAds
+      ShowAds
       LessonOrder
       Type
       Skill
@@ -575,6 +661,7 @@ export const onCreateLesson = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -601,15 +688,17 @@ export const onUpdateLesson = /* GraphQL */ `
         LocalizedName
         ChapterOrder
         LocalizedDescription
+        LocalizedAudioDescription
         createdAt
         updatedAt
         owner
+        __typename
       }
       Description
       IsActive
       IsPremium
       IsTest
-      showAds
+      ShowAds
       LessonOrder
       Type
       Skill
@@ -618,6 +707,7 @@ export const onUpdateLesson = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -644,15 +734,17 @@ export const onDeleteLesson = /* GraphQL */ `
         LocalizedName
         ChapterOrder
         LocalizedDescription
+        LocalizedAudioDescription
         createdAt
         updatedAt
         owner
+        __typename
       }
       Description
       IsActive
       IsPremium
       IsTest
-      showAds
+      ShowAds
       LessonOrder
       Type
       Skill
@@ -661,6 +753,7 @@ export const onDeleteLesson = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -678,6 +771,7 @@ export const onCreateSubjectProfileLevel = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -695,6 +789,7 @@ export const onUpdateSubjectProfileLevel = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -712,6 +807,7 @@ export const onDeleteSubjectProfileLevel = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -737,6 +833,7 @@ export const onCreateScore = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -762,6 +859,7 @@ export const onUpdateScore = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -787,6 +885,7 @@ export const onDeleteScore = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -813,6 +912,7 @@ export const onCreateProfileScoreSummary = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -839,6 +939,7 @@ export const onUpdateProfileScoreSummary = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -865,6 +966,7 @@ export const onDeleteProfileScoreSummary = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -880,6 +982,7 @@ export const onCreateBadges = /* GraphQL */ `
       LastUpdated
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -895,6 +998,7 @@ export const onUpdateBadges = /* GraphQL */ `
       LastUpdated
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -910,6 +1014,7 @@ export const onDeleteBadges = /* GraphQL */ `
       LastUpdated
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -927,6 +1032,7 @@ export const onCreateProfileBadges = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -944,6 +1050,7 @@ export const onUpdateProfileBadges = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -961,6 +1068,7 @@ export const onDeleteProfileBadges = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -976,6 +1084,7 @@ export const onCreateImages = /* GraphQL */ `
       ImageType
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -991,6 +1100,7 @@ export const onUpdateImages = /* GraphQL */ `
       ImageType
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -1006,6 +1116,7 @@ export const onDeleteImages = /* GraphQL */ `
       ImageType
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -1021,10 +1132,12 @@ export const onCreateTeacher = /* GraphQL */ `
       SchoolID
       Subjects {
         nextToken
+        __typename
       }
       createdAt
       updatedAt
       schoolTeachersId
+      __typename
     }
   }
 `;
@@ -1040,10 +1153,12 @@ export const onUpdateTeacher = /* GraphQL */ `
       SchoolID
       Subjects {
         nextToken
+        __typename
       }
       createdAt
       updatedAt
       schoolTeachersId
+      __typename
     }
   }
 `;
@@ -1059,10 +1174,12 @@ export const onDeleteTeacher = /* GraphQL */ `
       SchoolID
       Subjects {
         nextToken
+        __typename
       }
       createdAt
       updatedAt
       schoolTeachersId
+      __typename
     }
   }
 `;
@@ -1077,15 +1194,19 @@ export const onCreateSchool = /* GraphQL */ `
       ImageType
       Teachers {
         nextToken
+        __typename
       }
       Students {
         nextToken
+        __typename
       }
       Subjects {
         nextToken
+        __typename
       }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -1100,15 +1221,19 @@ export const onUpdateSchool = /* GraphQL */ `
       ImageType
       Teachers {
         nextToken
+        __typename
       }
       Students {
         nextToken
+        __typename
       }
       Subjects {
         nextToken
+        __typename
       }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -1123,15 +1248,19 @@ export const onDeleteSchool = /* GraphQL */ `
       ImageType
       Teachers {
         nextToken
+        __typename
       }
       Students {
         nextToken
+        __typename
       }
       Subjects {
         nextToken
+        __typename
       }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -1149,6 +1278,11 @@ export const onCreateClasses = /* GraphQL */ `
       ImageType
       Students {
         nextToken
+        __typename
+      }
+      Assignments {
+        nextToken
+        __typename
       }
       SubjectID
       LevelID
@@ -1156,6 +1290,7 @@ export const onCreateClasses = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -1173,6 +1308,11 @@ export const onUpdateClasses = /* GraphQL */ `
       ImageType
       Students {
         nextToken
+        __typename
+      }
+      Assignments {
+        nextToken
+        __typename
       }
       SubjectID
       LevelID
@@ -1180,6 +1320,7 @@ export const onUpdateClasses = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -1197,6 +1338,11 @@ export const onDeleteClasses = /* GraphQL */ `
       ImageType
       Students {
         nextToken
+        __typename
+      }
+      Assignments {
+        nextToken
+        __typename
       }
       SubjectID
       LevelID
@@ -1204,6 +1350,7 @@ export const onDeleteClasses = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      __typename
     }
   }
 `;
@@ -1232,6 +1379,7 @@ export const onCreateStudentClassroom = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        __typename
       }
       SubjectID
       LevelID
@@ -1242,6 +1390,7 @@ export const onCreateStudentClassroom = /* GraphQL */ `
       classesStudentsId
       studentStudentClassroomsId
       owner
+      __typename
     }
   }
 `;
@@ -1270,6 +1419,7 @@ export const onUpdateStudentClassroom = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        __typename
       }
       SubjectID
       LevelID
@@ -1280,6 +1430,7 @@ export const onUpdateStudentClassroom = /* GraphQL */ `
       classesStudentsId
       studentStudentClassroomsId
       owner
+      __typename
     }
   }
 `;
@@ -1308,6 +1459,7 @@ export const onDeleteStudentClassroom = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        __typename
       }
       SubjectID
       LevelID
@@ -1318,14 +1470,16 @@ export const onDeleteStudentClassroom = /* GraphQL */ `
       classesStudentsId
       studentStudentClassroomsId
       owner
+      __typename
     }
   }
 `;
 export const onCreateAssignments = /* GraphQL */ `
   subscription OnCreateAssignments(
     $filter: ModelSubscriptionAssignmentsFilterInput
+    $owner: String
   ) {
-    onCreateAssignments(filter: $filter) {
+    onCreateAssignments(filter: $filter, owner: $owner) {
       id
       Name
       Description
@@ -1334,20 +1488,42 @@ export const onCreateAssignments = /* GraphQL */ `
       ImageType
       SubjectID
       LevelID
-      classroomID
+      ClassRef {
+        id
+        Name
+        Description
+        IsActive
+        ImageURL
+        ImageType
+        SubjectID
+        LevelID
+        RegistrationCode
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      StudentAssignments {
+        nextToken
+        __typename
+      }
       DueDate
       Status
       Questions
       createdAt
       updatedAt
+      classesAssignmentsId
+      owner
+      __typename
     }
   }
 `;
 export const onUpdateAssignments = /* GraphQL */ `
   subscription OnUpdateAssignments(
     $filter: ModelSubscriptionAssignmentsFilterInput
+    $owner: String
   ) {
-    onUpdateAssignments(filter: $filter) {
+    onUpdateAssignments(filter: $filter, owner: $owner) {
       id
       Name
       Description
@@ -1356,20 +1532,42 @@ export const onUpdateAssignments = /* GraphQL */ `
       ImageType
       SubjectID
       LevelID
-      classroomID
+      ClassRef {
+        id
+        Name
+        Description
+        IsActive
+        ImageURL
+        ImageType
+        SubjectID
+        LevelID
+        RegistrationCode
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      StudentAssignments {
+        nextToken
+        __typename
+      }
       DueDate
       Status
       Questions
       createdAt
       updatedAt
+      classesAssignmentsId
+      owner
+      __typename
     }
   }
 `;
 export const onDeleteAssignments = /* GraphQL */ `
   subscription OnDeleteAssignments(
     $filter: ModelSubscriptionAssignmentsFilterInput
+    $owner: String
   ) {
-    onDeleteAssignments(filter: $filter) {
+    onDeleteAssignments(filter: $filter, owner: $owner) {
       id
       Name
       Description
@@ -1378,12 +1576,33 @@ export const onDeleteAssignments = /* GraphQL */ `
       ImageType
       SubjectID
       LevelID
-      classroomID
+      ClassRef {
+        id
+        Name
+        Description
+        IsActive
+        ImageURL
+        ImageType
+        SubjectID
+        LevelID
+        RegistrationCode
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      StudentAssignments {
+        nextToken
+        __typename
+      }
       DueDate
       Status
       Questions
       createdAt
       updatedAt
+      classesAssignmentsId
+      owner
+      __typename
     }
   }
 `;
@@ -1393,13 +1612,32 @@ export const onCreateStudentAssignments = /* GraphQL */ `
   ) {
     onCreateStudentAssignments(filter: $filter) {
       id
-      AssignmentID
+      AssignmentRef {
+        id
+        Name
+        Description
+        IsActive
+        ImageURL
+        ImageType
+        SubjectID
+        LevelID
+        DueDate
+        Status
+        Questions
+        createdAt
+        updatedAt
+        classesAssignmentsId
+        owner
+        __typename
+      }
       ProfileID
       Status
       CreatedDate
       LastUpdated
       createdAt
       updatedAt
+      assignmentsStudentAssignmentsId
+      __typename
     }
   }
 `;
@@ -1409,13 +1647,32 @@ export const onUpdateStudentAssignments = /* GraphQL */ `
   ) {
     onUpdateStudentAssignments(filter: $filter) {
       id
-      AssignmentID
+      AssignmentRef {
+        id
+        Name
+        Description
+        IsActive
+        ImageURL
+        ImageType
+        SubjectID
+        LevelID
+        DueDate
+        Status
+        Questions
+        createdAt
+        updatedAt
+        classesAssignmentsId
+        owner
+        __typename
+      }
       ProfileID
       Status
       CreatedDate
       LastUpdated
       createdAt
       updatedAt
+      assignmentsStudentAssignmentsId
+      __typename
     }
   }
 `;
@@ -1425,13 +1682,32 @@ export const onDeleteStudentAssignments = /* GraphQL */ `
   ) {
     onDeleteStudentAssignments(filter: $filter) {
       id
-      AssignmentID
+      AssignmentRef {
+        id
+        Name
+        Description
+        IsActive
+        ImageURL
+        ImageType
+        SubjectID
+        LevelID
+        DueDate
+        Status
+        Questions
+        createdAt
+        updatedAt
+        classesAssignmentsId
+        owner
+        __typename
+      }
       ProfileID
       Status
       CreatedDate
       LastUpdated
       createdAt
       updatedAt
+      assignmentsStudentAssignmentsId
+      __typename
     }
   }
 `;
@@ -1448,10 +1724,12 @@ export const onCreateStudent = /* GraphQL */ `
       ProfileID
       StudentClassrooms {
         nextToken
+        __typename
       }
       createdAt
       updatedAt
       schoolStudentsId
+      __typename
     }
   }
 `;
@@ -1468,10 +1746,12 @@ export const onUpdateStudent = /* GraphQL */ `
       ProfileID
       StudentClassrooms {
         nextToken
+        __typename
       }
       createdAt
       updatedAt
       schoolStudentsId
+      __typename
     }
   }
 `;
@@ -1488,10 +1768,12 @@ export const onDeleteStudent = /* GraphQL */ `
       ProfileID
       StudentClassrooms {
         nextToken
+        __typename
       }
       createdAt
       updatedAt
       schoolStudentsId
+      __typename
     }
   }
 `;
@@ -1510,6 +1792,7 @@ export const onCreateDataRemovalRequest = /* GraphQL */ `
       RequestDate
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -1528,6 +1811,7 @@ export const onUpdateDataRemovalRequest = /* GraphQL */ `
       RequestDate
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -1546,6 +1830,7 @@ export const onDeleteDataRemovalRequest = /* GraphQL */ `
       RequestDate
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -1563,6 +1848,7 @@ export const onCreateUserFeedback = /* GraphQL */ `
       feedbackContext
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -1580,6 +1866,7 @@ export const onUpdateUserFeedback = /* GraphQL */ `
       feedbackContext
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -1597,276 +1884,7 @@ export const onDeleteUserFeedback = /* GraphQL */ `
       feedbackContext
       createdAt
       updatedAt
-    }
-  }
-`;
-export const onCreateSubject = /* GraphQL */ `
-  subscription OnCreateSubject($filter: ModelSubscriptionSubjectFilterInput) {
-    onCreateSubject(filter: $filter) {
-      id
-      Name
-      Description
-      IsActive
-      IsPremium
-      IsTest
-      Locale
-      Levels {
-        nextToken
-      }
-      createdAt
-      updatedAt
-      teacherSubjectsId
-      schoolSubjectsId
-    }
-  }
-`;
-export const onUpdateSubject = /* GraphQL */ `
-  subscription OnUpdateSubject($filter: ModelSubscriptionSubjectFilterInput) {
-    onUpdateSubject(filter: $filter) {
-      id
-      Name
-      Description
-      IsActive
-      IsPremium
-      IsTest
-      Locale
-      Levels {
-        nextToken
-      }
-      createdAt
-      updatedAt
-      teacherSubjectsId
-      schoolSubjectsId
-    }
-  }
-`;
-export const onDeleteSubject = /* GraphQL */ `
-  subscription OnDeleteSubject($filter: ModelSubscriptionSubjectFilterInput) {
-    onDeleteSubject(filter: $filter) {
-      id
-      Name
-      Description
-      IsActive
-      IsPremium
-      IsTest
-      Locale
-      Levels {
-        nextToken
-      }
-      createdAt
-      updatedAt
-      teacherSubjectsId
-      schoolSubjectsId
-    }
-  }
-`;
-export const onCreateLevel = /* GraphQL */ `
-  subscription OnCreateLevel($filter: ModelSubscriptionLevelFilterInput) {
-    onCreateLevel(filter: $filter) {
-      id
-      Name
-      subjectID
-      SubjectObj {
-        id
-        Name
-        Description
-        IsActive
-        IsPremium
-        IsTest
-        Locale
-        createdAt
-        updatedAt
-        teacherSubjectsId
-        schoolSubjectsId
-      }
-      Description
-      IsActive
-      IsPremium
-      IsTest
-      LocalizedName
-      LocalizedDescription
-      Chapters {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateLevel = /* GraphQL */ `
-  subscription OnUpdateLevel($filter: ModelSubscriptionLevelFilterInput) {
-    onUpdateLevel(filter: $filter) {
-      id
-      Name
-      subjectID
-      SubjectObj {
-        id
-        Name
-        Description
-        IsActive
-        IsPremium
-        IsTest
-        Locale
-        createdAt
-        updatedAt
-        teacherSubjectsId
-        schoolSubjectsId
-      }
-      Description
-      IsActive
-      IsPremium
-      IsTest
-      LocalizedName
-      LocalizedDescription
-      Chapters {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteLevel = /* GraphQL */ `
-  subscription OnDeleteLevel($filter: ModelSubscriptionLevelFilterInput) {
-    onDeleteLevel(filter: $filter) {
-      id
-      Name
-      subjectID
-      SubjectObj {
-        id
-        Name
-        Description
-        IsActive
-        IsPremium
-        IsTest
-        Locale
-        createdAt
-        updatedAt
-        teacherSubjectsId
-        schoolSubjectsId
-      }
-      Description
-      IsActive
-      IsPremium
-      IsTest
-      LocalizedName
-      LocalizedDescription
-      Chapters {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateChapter = /* GraphQL */ `
-  subscription OnCreateChapter($filter: ModelSubscriptionChapterFilterInput) {
-    onCreateChapter(filter: $filter) {
-      id
-      Name
-      levelID
-      LevelObj {
-        id
-        Name
-        subjectID
-        Description
-        IsActive
-        IsPremium
-        IsTest
-        LocalizedName
-        LocalizedDescription
-        createdAt
-        updatedAt
-      }
-      Description
-      IsActive
-      IsPremium
-      IsTest
-      LocalizedName
-      ChapterOrder
-      LocalizedDescription
-      Questions {
-        nextToken
-      }
-      Lessons {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateChapter = /* GraphQL */ `
-  subscription OnUpdateChapter($filter: ModelSubscriptionChapterFilterInput) {
-    onUpdateChapter(filter: $filter) {
-      id
-      Name
-      levelID
-      LevelObj {
-        id
-        Name
-        subjectID
-        Description
-        IsActive
-        IsPremium
-        IsTest
-        LocalizedName
-        LocalizedDescription
-        createdAt
-        updatedAt
-      }
-      Description
-      IsActive
-      IsPremium
-      IsTest
-      LocalizedName
-      ChapterOrder
-      LocalizedDescription
-      Questions {
-        nextToken
-      }
-      Lessons {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteChapter = /* GraphQL */ `
-  subscription OnDeleteChapter($filter: ModelSubscriptionChapterFilterInput) {
-    onDeleteChapter(filter: $filter) {
-      id
-      Name
-      levelID
-      LevelObj {
-        id
-        Name
-        subjectID
-        Description
-        IsActive
-        IsPremium
-        IsTest
-        LocalizedName
-        LocalizedDescription
-        createdAt
-        updatedAt
-      }
-      Description
-      IsActive
-      IsPremium
-      IsTest
-      LocalizedName
-      ChapterOrder
-      LocalizedDescription
-      Questions {
-        nextToken
-      }
-      Lessons {
-        nextToken
-      }
-      createdAt
-      updatedAt
+      __typename
     }
   }
 `;

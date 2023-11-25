@@ -1,438 +1,517 @@
 # This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 input AMPLIFY {
-	globalAuthRule: AuthRule = { allow: public }
+  globalAuthRule: AuthRule = { allow: public }
 } # FOR TESTING ONLY!
-type Users @model @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Admin"] }]) {
-	Email: String!
-	Name: String!
-	NoOfProfiles: Int
-	Profiles: [Profile] @hasMany
-	LastLogin: AWSDateTime
+type Users
+  @model
+  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Admin"] }]) {
+  Email: String!
+  Name: String!
+  NoOfProfiles: Int
+  Profiles: [Profile] @hasMany
+  LastLogin: AWSDateTime
 }
 
 type Profile
-	@model
-	@auth(
-		rules: [
-			{ allow: owner, operations: [create, update, delete, read] }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: groups, groups: ["schoolteacher"], operations: [read] }
-		]
-	) {
-	UserRef: Users @belongsTo
-	Name: String!
-	Age: Int
-	PictureURL: String
-	IsDefault: Boolean
-	RewardsScored: Int
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, update, delete, read] }
+      { allow: groups, groups: ["Admin"] }
+      { allow: groups, groups: ["schoolteacher"], operations: [read] }
+    ]
+  ) {
+  UserRef: Users @belongsTo
+  Name: String!
+  Age: Int
+  PictureURL: String
+  IsDefault: Boolean
+  RewardsScored: Int
 }
 
 type Subject
-	@model
-	@auth(
-		rules: [
-			{ allow: public, provider: iam, operations: [read] }
-			{ allow: private, operations: [read] }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: groups, groups: ["schoolteacher"], operations: [read] }
-		]
-	) {
-	id: ID!
-	Name: String!
-	Description: String
-	IsActive: Boolean
-	IsPremium: Boolean
-	IsTest: Boolean
-	Locale: String
-	Levels: [Level] @hasMany(indexName: "bySubject", fields: ["id"])
+  @model
+  @auth(
+    rules: [
+      { allow: public, provider: iam , operations: [read]}
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin"] }
+      { allow: groups, groups: ["schoolteacher"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  Name: String!
+  Description: String
+  IsActive: Boolean
+  IsPremium: Boolean
+  IsTest: Boolean  
+  Locale: String
+  Levels: [Level] @hasMany(indexName: "bySubject", fields: ["id"])
 }
 
 type Level
-	@model
-	@auth(
-		rules: [
-			{ allow: public, provider: iam, operations: [read] }
-			{ allow: private, operations: [read] }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: groups, groups: ["schoolteacher"], operations: [read] }
-		]
-	) {
-	id: ID!
-	Name: String!
-	subjectID: ID! @index(name: "bySubject", sortKeyFields: ["Name"], queryField: "levelsBySubject")
-	SubjectObj: Subject! @belongsTo(fields: ["subjectID"])
-	Description: String
-	IsActive: Boolean
-	IsPremium: Boolean
-	IsTest: Boolean
-	LocalizedName: String
-	LocalizedDescription: String
-	Chapters: [Chapter] @hasMany(indexName: "byLevel", fields: ["id"])
+  @model
+  @auth(
+    rules: [
+      { allow: public, provider: iam , operations: [read]}
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin"] }
+      { allow: groups, groups: ["schoolteacher"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  Name: String!
+  subjectID: ID!
+    @index(
+      name: "bySubject"
+      sortKeyFields: ["Name"]
+      queryField: "levelsBySubject"
+    )
+  SubjectObj: Subject! @belongsTo(fields: ["subjectID"])
+  Description: String
+  IsActive: Boolean
+  IsPremium: Boolean
+  IsTest: Boolean  
+  LocalizedName: String
+  LocalizedDescription: String
+  Chapters: [Chapter] @hasMany(indexName: "byLevel", fields: ["id"])
 }
 
 type Chapter
-	@model
-	@auth(
-		rules: [
-			{ allow: public, provider: iam, operations: [read] }
-			{ allow: private, operations: [read] }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: owner, operations: [create, read, update] }
-			{ allow: groups, groups: ["schoolteacher"], operations: [read] }
-		]
-	) {
-	id: ID!
-	Name: String!
-	levelID: ID! @index(name: "byLevel", sortKeyFields: ["Name"], queryField: "chaptersByLevel")
-	LevelObj: Level! @belongsTo(fields: ["levelID"])
-	Description: String
-	IsActive: Boolean
-	IsPremium: Boolean
-	IsTest: Boolean
-	LocalizedName: String
-	ChapterOrder: Int
-	LocalizedDescription: String
-	LocalizedAudioDescription: String
-	Questions: [Question] @hasMany(indexName: "byChapter", fields: ["id"])
-	Lessons: [Lesson] @hasMany(indexName: "byChapter", fields: ["id"])
+  @model
+  @auth(
+    rules: [
+      { allow: public, provider: iam , operations: [read]}
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin"] }
+      { allow: owner, operations: [create, read, update ]  }
+      { allow: groups, groups: ["schoolteacher"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  Name: String!
+  levelID: ID!
+    @index(
+      name: "byLevel"
+      sortKeyFields: ["Name"]
+      queryField: "chaptersByLevel"
+    )
+  LevelObj: Level! @belongsTo(fields: ["levelID"])
+  Description: String
+  IsActive: Boolean
+  IsPremium: Boolean
+  IsTest: Boolean  
+  LocalizedName: String
+  ChapterOrder: Int
+  LocalizedDescription: String
+  LocalizedAudioDescription: String
+  Questions: [Question] @hasMany(indexName: "byChapter", fields: ["id"])
+  Lessons: [Lesson] @hasMany(indexName: "byChapter", fields: ["id"])
 }
 
 type Question
-	@model
-	@auth(
-		rules: [
-			{ allow: private, operations: [read] }
-			{ allow: groups, groups: ["Admin"], operations: [create, read, update, delete] }
-			{ allow: owner, operations: [create, read, update] }
-			{ allow: groups, groups: ["schoolteacher"], operations: [read] }
-		]
-	) {
-	id: ID!
-	Name: String!
-	LocalizedName: String
-	LocalizedDescription: String
-	LocalizedAudioDescription: String
-	chapterID: ID! @index(name: "byChapter", sortKeyFields: ["Name"], queryField: "questionsByChapter")
-	ChapterObj: Chapter! @belongsTo(fields: ["chapterID"])
-	Description: String
-	IsActive: Boolean
-	IsPremium: Boolean
-	IsTest: Boolean
-	Type: String
-	Skill: String
-	QuestionObject: AWSJSON
-	QuestionOrder: Int
-	NoOfQuestions: Int
-	SuggestedRewardPoints: Int
-	PassPercentage: Int
-	Version: Int
-	TimeAllowed: Int
+  @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      {
+        allow: groups
+        groups: ["Admin"]
+        operations: [create, read, update, delete]
+      }
+      { allow: owner, operations: [create, read, update ]  }
+      { allow: groups, groups: ["schoolteacher"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  Name: String!
+  LocalizedName: String
+  LocalizedDescription: String
+  LocalizedAudioDescription: String
+  chapterID: ID!
+    @index(
+      name: "byChapter"
+      sortKeyFields: ["Name"]
+      queryField: "questionsByChapter"
+    )
+  ChapterObj: Chapter! @belongsTo(fields: ["chapterID"])
+  Description: String
+  IsActive: Boolean
+  IsPremium: Boolean
+  IsTest: Boolean
+  Type: String
+  Skill: String
+  QuestionObject: AWSJSON
+  QuestionOrder: Int
+  NoOfQuestions: Int
+  SuggestedRewardPoints: Int
+  PassPercentage: Int
+  Version: Int
+  TimeAllowed: Int
 }
 
 type Query {
-	scanQuestions: QuestionsResponse
+  scanQuestions: QuestionsResponse
 }
 
 type QuestionsResponse {
-	items: [Question]
+  items: [Question]
 }
 
-type Lesson
-	@model
-	@auth(
-		rules: [
-			{ allow: private, operations: [read] }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: owner, operations: [create, read, update] }
-			{ allow: groups, groups: ["schoolteacher"], operations: [read] }
-		]
-	) {
-	id: ID!
-	Name: String!
-	LocalizedName: String
-	LocalizedDescription: String
-	LocalizedAudioDescription: String
-	chapterID: ID! @index(name: "byChapter", sortKeyFields: ["Name"], queryField: "lessonsByChapter")
-	ChapterObj: Chapter! @belongsTo(fields: ["chapterID"])
-	Description: String
-	IsActive: Boolean
-	IsPremium: Boolean
-	IsTest: Boolean
-	ShowAds: Boolean
-	LessonOrder: Int
-	Type: String
-	Skill: String
-	LessonObject: AWSJSON
-	Version: Int
+
+
+type Lesson @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin"] }
+      { allow: owner, operations: [create, read, update ]  }
+      { allow: groups, groups: ["schoolteacher"], operations: [read] }
+    ]
+  ) {
+  id: ID! 
+  Name: String!
+  LocalizedName: String
+  LocalizedDescription: String
+  LocalizedAudioDescription: String
+  chapterID: ID!
+    @index(
+      name: "byChapter"
+      sortKeyFields: ["Name"]
+      queryField: "lessonsByChapter"
+    )
+  ChapterObj: Chapter! @belongsTo(fields: ["chapterID"])
+  Description: String
+  IsActive: Boolean
+  IsPremium: Boolean
+  IsTest: Boolean
+  ShowAds: Boolean
+  LessonOrder: Int
+  Type: String
+  Skill: String
+  LessonObject: AWSJSON
+  Version: Int
 }
 
 type SubjectProfileLevel
-	@model
-	@auth(
-		rules: [
-			{ allow: owner }
-			{ allow: private, operations: [read] }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: groups, groups: ["schoolteacher"], operations: [read] }
-		]
-	) {
-	id: ID!
-	subjectID: String!
-	profileID: String!
-	levelID: String!
-	LevelOrder: Int
+  @model
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin"] }
+      { allow: groups, groups: ["schoolteacher"], operations: [read] }
+    ]
+  ) {
+  id: ID! 
+  subjectID: String!
+  profileID: ID! @index(
+      name: "byProfileId"
+      sortKeyFields: ["subjectID","levelID"], 
+      queryField: "SPLByProfileID"
+    )
+  levelID: String!
+  LevelOrder: Int
 }
 
 type Score
-	@model
-	@auth(
-		rules: [
-			{ allow: owner }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: groups, groups: ["schoolteacher"], operations: [read] }
-		]
-	) {
-	id: ID!
-	subjectProfileLevelID: String
-		@index(name: "bySubjectProfileLevel", sortKeyFields: ["LastTestTime"], queryField: "scoresBySPL")
-	QuestionID: String!
-	ChapterID: String!
-	Description: String
-	ScoredPoints: Int
-	Status: String
-	TimeTaken: Int
-	Attempts: Int
-	Skill: String
-	LastTestTime: AWSDateTime
-	Answer: AWSJSON
-	SubjectProfileType: String
+  @model
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Admin"] }
+      { allow: groups, groups: ["schoolteacher"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  subjectProfileLevelID: String
+    @index(
+      name: "bySubjectProfileLevel"
+      sortKeyFields: ["LastTestTime"]
+      queryField: "scoresBySPL"
+    )
+  QuestionID: String!
+  ChapterID: String!
+  Description: String
+  ScoredPoints: Int
+  Status: String
+  TimeTaken: Int
+  Attempts: Int
+  Skill: String
+  LastTestTime: AWSDateTime
+  Answer: AWSJSON
+  SubjectProfileType: String
 }
 
 type ProfileScoreSummary
-	@model
-	@auth(
-		rules: [
-			{ allow: owner }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: groups, groups: ["schoolteacher"], operations: [read] }
-		]
-	) {
-	id: ID!
-	SubjectProfileID: String!
-		@index(name: "bySubjectProfile", sortKeyFields: ["ReferenceID"], queryField: "ScoreSummaryBySPL")
-	TotalScore: Int
-	ReadingScore: Int
-	WritingScore: Int
-	ListeningScore: Int
-	SpeakingScore: Int
-	CompletedExcersises: Int
-	Status: String
-	Description: String
-	ReferenceID: String
-	ReferenceType: String
-	ScoreList: AWSJSON
-	LastUpdated: AWSDateTime
+  @model
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Admin"] }
+      { allow: groups, groups: ["schoolteacher"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  SubjectProfileID: String!
+    @index(
+      name: "bySubjectProfile"
+      sortKeyFields: ["ReferenceID"]
+      queryField: "ScoreSummaryBySPL"
+    )
+  TotalScore: Int
+  ReadingScore: Int
+  WritingScore: Int
+  ListeningScore: Int
+  SpeakingScore: Int
+  CompletedExcersises: Int
+  Status: String
+  Description: String
+  ReferenceID: String
+  ReferenceType: String
+  ScoreList: AWSJSON
+  LastUpdated: AWSDateTime
 }
 
 type Badges
-	@model
-	@auth(
-		rules: [
-			{ allow: private, operations: [read] }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: groups, groups: ["schoolteacher"], operations: [read] }
-		]
-	) {
-	id: ID!
-	Name: String!
-	Description: String
-	ImageURL: String
-	IsActive: Boolean
-	Type: String
-	LastUpdated: AWSDateTime
+  @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin"] }
+      { allow: groups, groups: ["schoolteacher"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  Name: String!
+  Description: String
+  ImageURL: String
+  IsActive: Boolean
+  Type: String
+  LastUpdated: AWSDateTime
 }
 
 type ProfileBadges
-	@model
-	@auth(
-		rules: [
-			{ allow: owner }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: groups, groups: ["schoolteacher"], operations: [read] }
-		]
-	) {
-	id: ID!
-	BadgeID: String!
-	BadgesCount: Int
-	ProfileID: String!
-	LastUpdated: AWSDateTime
+  @model
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Admin"] }
+      { allow: groups, groups: ["schoolteacher"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  BadgeID: String!
+  BadgesCount: Int
+  ProfileID: String! 
+    @index(
+      name: "byProfile"
+      sortKeyFields: ["BadgeID"]
+      queryField: "ProfileBadgesByProfile"
+    )
+  LastUpdated: AWSDateTime
 }
 
 type Images
-	@model
-	@auth(
-		rules: [
-			{ allow: private, operations: [read] }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: groups, groups: ["schoolteacher"], operations: [read] }
-		]
-	) {
-	id: ID!
-	Name: String! @index(name: "byImageName", queryField: "ImagesByImageName")
-	Description: String
-	Keywords: String
-	IsActive: Boolean
-	ImageURL: String
-	ImageType: String
+  @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin"] }
+      { allow: groups, groups: ["schoolteacher"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  Name: String!     @index(
+      name: "byImageName"
+      queryField: "ImagesByImageName"
+    )
+  Description: String
+  Keywords: String
+  IsActive: Boolean
+  ImageURL: String
+  ImageType: String
 }
 
 type Teacher
-	@model
-	@auth(rules: [{ allow: private, operations: [read] }, { allow: groups, groups: ["Admin", "SchoolAdmin"] }]) {
-	id: ID!
-	Name: String!
-	Description: String
-	IsActive: Boolean
-	ImageURL: String
-	ImageType: String
-	SchoolID: String!
-	Subjects: [Subject] @hasMany
+  @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin", "SchoolAdmin"] }
+    ]
+  ) {
+  id: ID!
+  Name: String!
+  Description: String
+  IsActive: Boolean
+  ImageURL: String
+  ImageType: String
+  SchoolID: String!
+  Subjects: [Subject] @hasMany
 }
 
 type School
-	@model
-	@auth(rules: [{ allow: private, operations: [read] }, { allow: groups, groups: ["Admin", "SchoolAdmin"] }]) {
-	id: ID!
-	Name: String!
-	Description: String
-	IsActive: Boolean
-	ImageURL: String
-	ImageType: String
-	Teachers: [Teacher] @hasMany
-	Students: [Student] @hasMany
-	Subjects: [Subject] @hasMany
+  @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin", "SchoolAdmin"] }
+    ]
+  ) {
+  id: ID!
+  Name: String!
+  Description: String
+  IsActive: Boolean
+  ImageURL: String
+  ImageType: String
+  Teachers: [Teacher] @hasMany
+  Students: [Student] @hasMany
+  Subjects: [Subject] @hasMany
 }
 
 type Classes
-	@model
-	@auth(
-		rules: [
-			{ allow: owner, operations: [create, update, delete, read] }
-			{ allow: groups, operations: [read], groups: ["student"] }
-			{ allow: groups, groups: ["Admin", "SchoolAdmin"] }
-		]
-	) {
-	id: ID!
-	Name: String!
-	Description: String
-	IsActive: Boolean
-	ImageURL: String
-	ImageType: String
-	Students: [StudentClassroom] @hasMany
-	SubjectID: String!
-	LevelID: String!
-	RegistrationCode: String @index(name: "byRegistrationCode", sortKeyFields: ["Name"])
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, update, delete, read] }
+      { allow: groups, operations: [read], groups: ["student"] }
+      { allow: groups, groups: ["Admin", "SchoolAdmin"] }
+    ]
+  ) {
+  id: ID!
+  Name: String!
+  Description: String
+  IsActive: Boolean
+  ImageURL: String
+  ImageType: String
+  Students: [StudentClassroom] @hasMany
+  Assignments: [Assignments] @hasMany
+  SubjectID: String!
+  LevelID: String!
+  RegistrationCode: String
+    @index(name: "byRegistrationCode", sortKeyFields: ["Name"])
 }
 
 type StudentClassroom
-	@model
-	@auth(
-		rules: [
-			{ allow: owner, operations: [create, update, delete, read] }
-			{ allow: private, operations: [read] }
-			{ allow: groups, groups: ["schoolteacher"], operations: [read] }
-			{ allow: groups, groups: ["Admin", "SchoolAdmin"] }
-		]
-	) {
-	id: ID!
-	Name: String!
-	Description: String
-	IsActive: Boolean
-	ImageURL: String
-	ImageType: String
-	ClassRef: Classes @belongsTo
-	SubjectID: String!
-	LevelID: String!
-	ProfileID: String!
-	StudentID: String!
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, update, delete, read] }
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["schoolteacher"], operations: [read] }
+      { allow: groups, groups: ["Admin", "SchoolAdmin"] }
+    ]
+  ) {
+  id: ID!
+  Name: String!
+  Description: String
+  IsActive: Boolean
+  ImageURL: String
+  ImageType: String
+  ClassRef: Classes @belongsTo
+  SubjectID: String!
+  LevelID: String!
+  ProfileID: String!
+  StudentID: String!
 }
 
 type Assignments
-	@model
-	@auth(
-		rules: [
-			{ allow: private, operations: [read] }
-			{ allow: groups, groups: ["Admin", "SchoolAdmin"] }
-			{ allow: groups, groups: ["schoolteacher"], operations: [create, read, update, delete] }
-		]
-	) {
-	id: ID!
-	Name: String!
-	Description: String
-	IsActive: Boolean
-	ImageURL: String
-	ImageType: String
-	SubjectID: String!
-	LevelID: String!
-	classroomID: String!
-	DueDate: AWSDateTime
-	Status: String
-	Questions: [String]
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, update, delete, read] }
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["schoolteacher"], operations: [read] }
+      { allow: groups, groups: ["Admin", "SchoolAdmin"] }
+    ]
+  ) {
+  id: ID!
+  Name: String!
+  Description: String
+  IsActive: Boolean
+  ImageURL: String
+  ImageType: String
+  SubjectID: String!
+  LevelID: String!
+  ClassRef: Classes @belongsTo
+  StudentAssignments: [StudentAssignments] @hasMany
+  DueDate: AWSDateTime
+  Status: String
+  Questions: [String]
 }
 
 type StudentAssignments
-	@model
-	@auth(
-		rules: [
-			{ allow: private, operations: [read] }
-			{ allow: groups, groups: ["Admin", "SchoolAdmin"] }
-			{ allow: groups, groups: ["schoolteacher", "student"], operations: [create, read, update] }
-		]
-	) {
-	id: ID!
-	AssignmentID: String!
-	ProfileID: String!
-	Status: String
-	CreatedDate: AWSDateTime
-	LastUpdated: AWSDateTime
+  @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin", "SchoolAdmin"] }
+      {
+        allow: groups
+        groups: ["schoolteacher", "student"]
+        operations: [create, read, update]
+      }
+    ]
+  ) {
+  id: ID!
+  AssignmentRef: Assignments @belongsTo
+  ProfileID: String! @index(name: "byProfileID", sortKeyFields: ["CreatedDate"])
+  Status: String
+  CreatedDate: AWSDateTime
+  LastUpdated: AWSDateTime
 }
 
 type Student
-	@model
-	@auth(rules: [{ allow: private, operations: [read] }, { allow: groups, groups: ["Admin", "SchoolAdmin"] }]) {
-	id: ID!
-	Name: String!
-	Description: String
-	IsActive: Boolean
-	ImageURL: String
-	ImageType: String
-	SchoolID: String!
-	ProfileID: String!
-	StudentClassrooms: [StudentClassroom] @hasMany
+  @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin", "SchoolAdmin"] }
+    ]
+  ) {
+  id: ID!
+  Name: String!
+  Description: String
+  IsActive: Boolean
+  ImageURL: String
+  ImageType: String
+  SchoolID: String!
+  ProfileID: String!
+  StudentClassrooms: [StudentClassroom] @hasMany
 }
 
-type DataRemovalRequest
-	@model
-	@auth(rules: [{ allow: public, provider: iam, operations: [create] }, { allow: groups, groups: ["Admin"] }]) {
-	id: ID!
-	Name: String!
-	EmailAddress: String
-	UserName: String
-	RequestDescription: String
-	AdditionalInformation: String
-	RequestorData: AWSJSON
-	RequestDate: AWSDateTime
-}
+type DataRemovalRequest 
+  @model
+  @auth(
+    rules: [ 
+    { allow: public, provider: iam , operations: [create]}
+    { allow: groups, groups: ["Admin"] }]) 
+       {
+  id: ID!
+  Name: String!
+  EmailAddress: String
+  UserName: String
+  RequestDescription: String
+  AdditionalInformation: String
+  RequestorData: AWSJSON,
+  RequestDate: AWSDateTime
+  }
 
-type UserFeedback
-	@model
-	@auth(rules: [{ allow: public, provider: iam, operations: [create] }, { allow: groups, groups: ["Admin"] }]) {
-	id: ID!
-	userID: String!
-	feedbackType: String
-	feedbackText: String
-	feedbackDate: AWSDateTime
-	feedbackStatus: String
-	feedbackContext: AWSJSON
-}
+  type UserFeedback 
+  @model
+  @auth(
+    rules: [      
+      { allow: public, provider: iam , operations: [create]}
+      { allow: groups, groups: ["Admin"] }]) {
+  id: ID!
+  userID: String!
+  feedbackType: String
+  feedbackText: String
+  feedbackDate: AWSDateTime
+  feedbackStatus: String
+  feedbackContext: AWSJSON
+  }
+
+

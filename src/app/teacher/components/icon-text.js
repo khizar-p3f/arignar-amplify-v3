@@ -1,3 +1,4 @@
+import { Typography } from "antd";
 import React from "react";
 
 export const IconText = ({ icon, text }) => {
@@ -8,7 +9,15 @@ export const IconText = ({ icon, text }) => {
 					marginRight: 8,
 				},
 			})}
-			{text}
+			<Typography.Paragraph
+				ellipsis={{
+					expandable: false,
+					rows: 1,
+					tooltip: text,
+				}}
+			>
+				{text}
+			</Typography.Paragraph>
 		</div>
 	);
 };

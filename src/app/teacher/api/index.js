@@ -1,8 +1,17 @@
 import { API } from "aws-amplify";
+import * as queries from "../../../graphql/queries";
+import * as mutations from "../../../graphql/mutations";
 
 export const teachersAPI = {
+	generateRegistrationCodeAPI: (codeLength) => {
+		// generate Alphanumeric code of length codeLength
+		const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		let result = "";
+		for (let i = codeLength; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+		return result;
+	},
 	listAllSubjectsAPI: async () => {
-		const listAllSubjectsQuery = `query MyQuery {
+		const listAllSubjectsQuery = `query MyQuery {      
             listSubjects(limit: 10) {
               items {
                 Description
@@ -64,12 +73,28 @@ export const teachersAPI = {
 		}
 	},
 	listAllClassesAPI: async () => {
-		const listAllClassesQuery = `  query ListClasses(
-      $filter: ModelClassesFilterInput
-      $limit: Int
-      $nextToken: String
-    ) {
-      listClasses(filter: $filter, limit: $limit, nextToken: $nextToken) {
+		const listAllClassesQuery = `  query ListClasses {
+      listAssignments {
+        items {
+          id
+          Name
+          Description
+          IsActive
+          ImageURL
+          ImageType
+          SubjectID
+          LevelID
+          DueDate
+          Status
+          Questions
+          createdAt
+          updatedAt
+          classesAssignmentsId
+          owner
+          __typename
+        }
+      }
+      listClasses{
         items {
           id
           Name
@@ -80,6 +105,25 @@ export const teachersAPI = {
           SubjectID
           LevelID
           RegistrationCode
+          Students{
+            items {
+              id
+              Name
+              Description
+              IsActive
+              ImageURL
+              ImageType
+              SubjectID
+              LevelID
+              ProfileID
+              StudentID
+              createdAt
+              updatedAt
+              classesStudentsId
+              studentStudentClassroomsId
+              owner
+            }
+          }
           createdAt
           updatedAt
           owner
@@ -96,28 +140,23 @@ export const teachersAPI = {
 		}
 	},
 	addClassAPI: async (classData) => {
-		const addClassQuery = `mutation CreateClasses(
-      $input: CreateClassesInput!
-      $condition: ModelClassesConditionInput
-    ) {
-      createClasses(input: $input, condition: $condition) {
-        id
-        Name
-        Description
-        IsActive
-        ImageURL
-        ImageType
-        SubjectID
-        LevelID
-        RegistrationCode
-        createdAt
-        updatedAt
-        owner
-      }
-    }`;
 		try {
 			const response = await API.graphql({
-				query: addClassQuery,
+				query: mutations.createClasses,
+				variables: {
+					input: classData,
+				},
+			});
+			return response;
+		} catch (error) {
+			console.log(error);
+			return error;
+		}
+	},
+	updateClassAPI: async (classData) => {
+		try {
+			const response = await API.graphql({
+				query: mutations.updateClasses,
 				variables: {
 					input: classData,
 				},

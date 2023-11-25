@@ -1,11 +1,14 @@
 import React from "react";
 import {
+	Avatar,
+	Badge,
 	Breadcrumb,
 	Button,
 	Card,
 	Col,
 	Divider,
 	Drawer,
+	Empty,
 	Flex,
 	Form,
 	Input,
@@ -14,6 +17,7 @@ import {
 	Select,
 	Space,
 	Spin,
+	Switch,
 	Table,
 	Typography,
 } from "antd";
@@ -24,8 +28,9 @@ import { getNameById, teachersAPI } from "../api";
 import { updateClassReducer } from "../../../store/reducers/teacher";
 import { useState } from "react";
 import PageHeader from "../components/page-header";
-import { FileAddOutlined, OrderedListOutlined, TableOutlined } from "@ant-design/icons";
-import { IconText } from "../components/icon-text";
+import { FileAddOutlined, OrderedListOutlined, TableOutlined, DatabaseOutlined } from "@ant-design/icons";
+import classRoom from "../../assets/images/class-room.png";
+
 const TeachersManageClass = () => {
 	const dispatch = useDispatch();
 	const teacher = useSelector((state) => state.teacher);
@@ -35,20 +40,120 @@ const TeachersManageClass = () => {
 	const [view, setView] = useState("list");
 	const [searchText, setSearchText] = useState("");
 	const [showAddClassModal, setShowAddClassModal] = useState(false);
+	const [selectedSubject, setSelectedSubject] = useState(null);
+	const [selectedLevel, setSelectedLevel] = useState(null);
+	const [selectedClass, setSelectedClass] = useState(null);
 	const [form] = Form.useForm();
 
-	const onFinish = (values) => {
-		console.log("Success:", values);
+	// to add new class
+	const addClass = (values) => {
+		const insertClassData = {
+			Name: values.Name,
+			Description: values.Description,
+			SubjectID: values.subject,
+			LevelID: values.level,
+			RegistrationCode: values.RegistrationCode,
+			IsActive: true,
+		};
+		Modal.confirm({
+			title: "Confirm",
+			content: "Are you sure you want to add this class?",
+			okText: "Yes",
+			cancelText: "No",
+			onOk: () => {
+				teachersAPI.addClassAPI(insertClassData).then((response) => {
+					if (response?.data?.createClasses?.id) {
+						Modal.success({
+							title: "Class Added Successfully",
+							content: (
+								<div>
+									<p>
+										Your class has been added successfully. Please note down the registration code for your class. You
+										can share this code with your students to join your class.
+									</p>
+									<p>
+										<strong>Registration Code:</strong> {response?.data?.createClasses?.RegistrationCode}
+									</p>
+								</div>
+							),
+							onOk: () => {
+								setShowAddClassModal(false);
+								dispatch(
+									updateClassReducer({
+										isLoaded: false,
+										data: [],
+									})
+								);
+								resetClassHandler();
+							},
+						});
+					}
+				});
+			},
+		});
+	};
+	//if user selected any card from list view, the slected item will be stored in selectedClass state to update class
+	const updateClass = (values) => {
+		const updateClassData = {
+			id: selectedClass.id,
+			Name: values.Name,
+			Description: values.Description,
+			SubjectID: values.subject,
+			LevelID: values.level,
+			RegistrationCode: values.RegistrationCode,
+			IsActive: values.IsActive,
+		};
+		Modal.confirm({
+			title: "Confirm",
+			content: "Are you sure you want to update this class?",
+			okText: "Yes",
+			cancelText: "No",
+			onOk: () => {
+				teachersAPI.updateClassAPI(updateClassData).then((response) => {
+					if (response?.data?.updateClasses?.id) {
+						Modal.success({
+							title: "Class Updated Successfully",
+							content: (
+								<div>
+									<p>Your class has been updated successfully.</p>
+								</div>
+							),
+							onOk: () => {
+								setShowAddClassModal(false);
+								dispatch(
+									updateClassReducer({
+										isLoaded: false,
+										data: [],
+									})
+								);
+								resetClassHandler();
+							},
+						});
+					}
+				});
+			},
+		});
 	};
 
+	//if user not filled all the required fields, this function will be called
 	const onFinishFailed = (errorInfo) => {
-		console.log("Failed:", errorInfo);
+		Modal.error({
+			title: "Error",
+			content: "Please fill all the required fields",
+		});
+		console.log({ errorInfo });
 	};
 
+	// to get all the classes
 	useEffect(() => {
 		if (!classes.isLoaded) {
 			teachersAPI.listAllClassesAPI().then((response) => {
-				dispatch(updateClassReducer(response?.data?.listClasses?.items || []));
+				dispatch(
+					updateClassReducer({
+						isLoaded: true,
+						data: response?.data?.listClasses?.items || [],
+					})
+				);
 				setClassLoaded(true);
 				setData(response?.data?.listClasses?.items || []);
 			});
@@ -58,11 +163,35 @@ const TeachersManageClass = () => {
 		}
 	}, [classes.isLoaded]);
 
+	// to filter the classes based on user search
 	const filterData = (text) => {
 		setSearchText(text);
 		const filteredData = classes.data.filter((item) => item.Name.toLowerCase().includes(text.toLowerCase()));
 		setData(filteredData);
 	};
+
+	// to edit the class details
+	const editClassHandler = (item) => {
+		form.setFieldsValue({
+			Name: item.Name,
+			Description: item.Description,
+			subject: item.SubjectID,
+			level: item.LevelID,
+			RegistrationCode: item.RegistrationCode,
+			IsActive: item.IsActive,
+		});
+		setSelectedSubject(item.SubjectID);
+		setSelectedLevel(item.LevelID);
+		setSelectedClass(item);
+		setShowAddClassModal(true);
+	};
+	// to reset the form
+	const resetClassHandler = () => {
+		form.resetFields();
+		setSelectedClass(null);
+		setShowAddClassModal(false);
+	};
+
 	const tableColumns = [
 		{
 			title: "Name",
@@ -75,13 +204,33 @@ const TeachersManageClass = () => {
 			dataIndex: "Description",
 			key: "Description",
 			width: 300,
-			elipsis: true,
+			render: (text) => <Typography.Paragraph ellipsis={{ rows: 2, tooltip: text }}>{text}</Typography.Paragraph>,
 		},
 		{
 			title: "Subject",
 			dataIndex: "SubjectID",
 			key: "SubjectID",
 			render: (text) => teacher.subjects.data.find((subject) => subject.id === text)?.Name,
+		},
+		{
+			title: "Level",
+			dataIndex: "LevelID",
+			key: "LevelID",
+			render: (text, record) =>
+				teacher.subjects.data
+					.find((subject) => subject.id === record.SubjectID)
+					?.Levels.items.find((level) => level.id === text)?.Name,
+		},
+		{
+			title: "Registration Code",
+			dataIndex: "RegistrationCode",
+			key: "RegistrationCode",
+		},
+		{
+			title: "Status",
+			dataIndex: "IsActive",
+			key: "IsActive",
+			render: (text) => (text ? <Badge status="success" text="Active" /> : <Badge status="error" text="Inactive" />),
 		},
 		{
 			title: "Action",
@@ -158,43 +307,103 @@ const TeachersManageClass = () => {
 							{/* Content view based on user selection */}
 							<Row gutter={[16, 16]} justify="start" align="middle">
 								{view === "list" ? (
-									data.map((item) => (
-										<Col span={8} key={item.id}>
-											<Card
-												actions={[
-													<Typography.Text key={1}>Edit</Typography.Text>,
-													<Typography.Text key={2}>Delete</Typography.Text>,
-												]}
-												bordered
-												style={{
-													cursor: "pointer",
-												}}
-											>
-												<Flex gap={0} vertical justify="start" align="flex-start">
-													<Typography.Title level={4}>{item.Name}</Typography.Title>
-													<div style={{ minHeight: 100 }}>
-														<Typography.Paragraph ellipsis={{ rows: 2, tooltip: item.Description }}>
-															{item.Description}
-														</Typography.Paragraph>
-													</div>
-													<Flex
-														gap={10}
-														justify="space-between"
-														align="center"
+									data.length > 0 ? (
+										data.map((item) => (
+											<Col span={8} key={item.id}>
+												<Badge.Ribbon
+													text={item.IsActive ? "Active Class Room" : "Inactive Class Room"}
+													color={item.IsActive ? "green" : "red"}
+													placement="end"
+												>
+													<Card
+														actions={[
+															<Button type="link" key={1} onClick={() => editClassHandler(item)}>
+																Edit
+															</Button>,
+															<Typography.Text key={2}>Delete</Typography.Text>,
+														]}
+														bordered
 														style={{
-															width: "100%",
+															cursor: "pointer",
 														}}
 													>
-														<IconText
-															icon={OrderedListOutlined}
-															text={teacher.subjects.data.find((subject) => subject.id === item.SubjectID)?.Name}
-														/>
-														<IconText icon={OrderedListOutlined} text="Subject" />
-													</Flex>
-												</Flex>
-											</Card>
+														<Flex gap={0} vertical justify="start" align="flex-start">
+															<Typography.Title level={4}>{item.Name}</Typography.Title>
+															<div
+																style={{
+																	minHeight: 80,
+																	width: "100%",
+																	borderBottom: "solid 1px #ddd",
+																	marginBottom: 5,
+																}}
+															>
+																<Typography.Paragraph ellipsis={{ rows: 2, tooltip: item.Description }}>
+																	{item.Description}
+																</Typography.Paragraph>
+															</div>
+															<Flex
+																gap={10}
+																style={{ width: "100%", borderBottom: "solid 1px #ddd" }}
+																justify="start"
+																align="flex-start"
+															>
+																<span>
+																	{teacher.subjects.data.find((subject) => subject.id === item.SubjectID)?.Name}
+																</span>
+																<Divider
+																	type="vertical"
+																	style={{
+																		height: 20,
+																		margin: "0 5px",
+																	}}
+																/>
+																<span>
+																	{
+																		teacher.subjects.data
+																			.find((subject) => subject.id === item.SubjectID)
+																			.Levels.items.find((level) => level.id === item.LevelID)?.Name
+																	}
+																</span>
+															</Flex>
+															<Flex
+																gap={10}
+																style={{ width: "100%", marginTop: 10 }}
+																justify="start"
+																align="flex-start"
+															>
+																<Space>
+																	<span>Registration Code:</span>
+
+																	<span>{item?.RegistrationCode || ""}</span>
+																</Space>
+															</Flex>
+														</Flex>
+													</Card>
+												</Badge.Ribbon>
+											</Col>
+										))
+									) : (
+										<Col span={24}>
+											<Badge.Ribbon text="No Class Found" placement="start">
+												<Card>
+													<Empty
+														description={
+															<Typography.Text>
+																No class found. Please click on{" "}
+																<strong>
+																	{" "}
+																	<a href="#" onClick={() => setShowAddClassModal(true)}>
+																		Add Class
+																	</a>{" "}
+																</strong>{" "}
+																button to add new class.
+															</Typography.Text>
+														}
+													/>
+												</Card>
+											</Badge.Ribbon>
 										</Col>
-									))
+									)
 								) : (
 									<Col span={24}>
 										<Table rowKey={(record) => record.id} dataSource={data} columns={tableColumns} />
@@ -208,67 +417,166 @@ const TeachersManageClass = () => {
 				</Row>
 
 				{/* Add Class Modal */}
-				<Drawer title="Add Class" placement="right" closable={false} open={showAddClassModal} width={500}>
-					<Form size="large" layout="vertical" onFinish={onFinish} onFinishFailed={onFinishFailed}>
-						<Form.Item
-							label="Name"
-							name="name"
-							rules={[
-								{
-									required: true,
-									message: "Please input your username!",
-								},
-							]}
-						>
-							<Input />
-						</Form.Item>
-
-						<Form.Item
-							label="Description"
-							name="description"
-							rules={[
-								{
-									required: true,
-									message: "Please input your password!",
-								},
-							]}
-						>
-							<Input.TextArea />
-						</Form.Item>
-
-						<Form.Item
-							label="Subject"
-							name="subject"
-							rules={[
-								{
-									required: true,
-									message: "Please input your password!",
-								},
-							]}
-						>
-							<Select>
-								{teacher.subjects.data.map((subject) => (
-									<Select.Option key={subject.id} value={subject.id}>
-										{subject.Name}
-									</Select.Option>
-								))}
-							</Select>
-						</Form.Item>
-						<Divider />
-						<Form.Item>
-							<Button type="primary" htmlType="submit">
-								Submit
-							</Button>
-							<Button
-								style={{
-									marginLeft: 10,
-								}}
-								onClick={() => setShowAddClassModal(false)}
+				<Drawer
+					title="Add Class"
+					placement="right"
+					closable={false}
+					open={showAddClassModal}
+					width={window.innerWidth - 250}
+				>
+					<Row gutter={[16, 16]} justify="start" align="middle">
+						<Col span={12}>
+							<Flex vertical justify="center" align="center" style={{ height: "100%" }}>
+								<Typography.Title level={2} style={{ margin: 0, fontWeight: "lighter" }} className="subtitle">
+									You're just one step away from creating your class
+								</Typography.Title>
+								<img src={classRoom} alt="class-room" height={400} />
+								<Typography.Text>
+									Please fill the below form to create your class. Once you create your class, you will be provided with
+									a registration code. You can share this code with your students to join your class.
+								</Typography.Text>
+							</Flex>
+						</Col>
+						<Col span={2}>
+							<Divider dashed orientation="center" type="vertical" style={{ height: "100%" }} />
+						</Col>
+						<Col span={10}>
+							<Form
+								form={form}
+								size="large"
+								layout="vertical"
+								onFinish={selectedClass ? updateClass : addClass}
+								onFinishFailed={onFinishFailed}
 							>
-								Cancel
-							</Button>
-						</Form.Item>
-					</Form>
+								<Form.Item
+									label="Class Room Name"
+									name="Name"
+									rules={[
+										{
+											required: true,
+											message: "Please input your username!",
+										},
+									]}
+								>
+									<Input />
+								</Form.Item>
+
+								<Form.Item
+									label="Class Room Description"
+									name="Description"
+									rules={[
+										{
+											required: true,
+											message: "Please input your password!",
+										},
+									]}
+								>
+									<Input.TextArea />
+								</Form.Item>
+
+								<Form.Item
+									label="Subject"
+									name="subject"
+									rules={[
+										{
+											required: true,
+											message: "Please input your password!",
+										},
+									]}
+								>
+									<Select
+										onChange={(value) => setSelectedSubject(value)}
+										options={teacher.subjects.data.map((subject) => ({
+											label: subject.Name,
+											value: subject.id,
+										}))}
+									/>
+								</Form.Item>
+								<Form.Item
+									label="Level"
+									name="level"
+									rules={[
+										{
+											required: true,
+											message: "Please generate  registration code!",
+										},
+									]}
+								>
+									<Select
+										onChange={(value) => setSelectedLevel(value)}
+										options={
+											selectedSubject
+												? teacher.subjects.data
+														.find((subject) => subject.id === selectedSubject)
+														?.Levels.items.map((level) => ({
+															label: level.Name,
+															value: level.id,
+														}))
+												: []
+										}
+									/>
+								</Form.Item>
+								{
+									selectedClass ? (
+										<Form.Item
+											label="Class Room Status"
+											name="IsActive"
+											rules={[
+												{
+													required: true,
+													message: "Please change the status!",
+												},
+											]}
+										>
+											<Switch
+												checkedChildren="Active"
+												unCheckedChildren="Inactive"
+												defaultChecked={selectedClass.IsActive}
+											/>
+										</Form.Item>
+									) : null // <Form.Item
+								}
+								<Divider />
+								<Form.Item
+									label="Registration Code"
+									name="RegistrationCode"
+									rules={[
+										{
+											required: true,
+											message: "Please input your password!",
+										},
+									]}
+									help={
+										<a
+											href="#"
+											onClick={() => {
+												let generateRegistrationCode = teachersAPI.generateRegistrationCodeAPI(6).toUpperCase();
+												form.setFieldsValue({ RegistrationCode: generateRegistrationCode });
+											}}
+										>
+											Generate Registration Code
+										</a>
+									}
+								>
+									<Input />
+								</Form.Item>
+								<Divider />
+								<Form.Item>
+									<Button type="primary" htmlType="submit">
+										Submit
+									</Button>
+									<Button
+										style={{
+											marginLeft: 10,
+										}}
+										onClick={() => resetClassHandler()}
+									>
+										Cancel
+									</Button>
+								</Form.Item>
+							</Form>
+						</Col>
+					</Row>
 				</Drawer>
 				{/* Add Class Modal */}
 			</div>

@@ -33,6 +33,7 @@ const ArignarTeacherMainPage = (props) => {
 			theme={{
 				algorithm: theme.defaultAlgorithm,
 				token: {
+					colorPrimary: "#544af4",
 					fontFamily: "Open Sans",
 					colorText: "#1d1d1f",
 				},

@@ -28,8 +28,7 @@ export const teacherSlice = createSlice({
 			return {
 				...state,
 				classes: {
-					isLoaded: true,
-					data: action.payload,
+					...action.payload,
 				},
 			};
 		},
