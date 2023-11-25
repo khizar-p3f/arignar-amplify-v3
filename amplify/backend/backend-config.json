@@ -206,6 +206,136 @@
       "type": "manual"
     }
   },
+  "parameters": {
+    "AMPLIFY_function_AdminQueriesa5dfd792_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueriesa5dfd792"
+        }
+      ]
+    },
+    "AMPLIFY_function_AdminQueriesa5dfd792_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueriesa5dfd792"
+        }
+      ]
+    },
+    "AMPLIFY_function_AudioManager_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AudioManager"
+        }
+      ]
+    },
+    "AMPLIFY_function_AudioManager_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AudioManager"
+        }
+      ]
+    },
+    "AMPLIFY_function_DallEImage_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "DallEImage"
+        }
+      ]
+    },
+    "AMPLIFY_function_DallEImage_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "DallEImage"
+        }
+      ]
+    },
+    "AMPLIFY_function_DallEImage_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "DallEImage"
+        }
+      ]
+    },
+    "AMPLIFY_function_arignar7efbb43fPostConfirmation_GROUP": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "arignar7efbb43fPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_arignar7efbb43fPostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "arignar7efbb43fPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_arignar7efbb43fPostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "arignar7efbb43fPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_arignarTextToSpeech_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "arignarTextToSpeech"
+        }
+      ]
+    },
+    "AMPLIFY_function_arignarTextToSpeech_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "arignarTextToSpeech"
+        }
+      ]
+    },
+    "AMPLIFY_function_arignarsharp_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "arignarsharp"
+        }
+      ]
+    },
+    "AMPLIFY_function_arignarsharp_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "arignarsharp"
+        }
+      ]
+    },
+    "AMPLIFY_hosting_amplifyhosting_appId": {
+      "usedBy": [
+        {
+          "category": "hosting",
+          "resourceName": "amplifyhosting"
+        }
+      ]
+    },
+    "AMPLIFY_hosting_amplifyhosting_type": {
+      "usedBy": [
+        {
+          "category": "hosting",
+          "resourceName": "amplifyhosting"
+        }
+      ]
+    }
+  },
   "storage": {
     "s3storage": {
       "dependsOn": [],

@@ -54,6 +54,11 @@
       },
       "storage": {
         "s3storage": {}
+      },
+      "api": {
+        "AdminQueries": {},
+        "ArignarREST": {},
+        "arignar": {}
       }
     }
   }
