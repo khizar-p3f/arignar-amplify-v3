@@ -1,4 +1,4 @@
-import React, { StrictMode } from "react";
+import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { store } from "./store";
@@ -11,8 +11,6 @@ const root = createRoot(rootElement);
 Amplify.configure(AwsConfig);
 root.render(
 	<Provider store={store}>
-		<StrictMode>
-			<ArignarMainPage />
-		</StrictMode>
+		<ArignarMainPage />
 	</Provider>
 );

@@ -25,9 +25,6 @@ module.exports = {
 		clean: true,
 		pathinfo: true,
 		path: BUILD_DIR,
-		filename: (pathData) => {
-			return pathData.chunk.name === "main" ? "[name].js" : "[name]/[name].js";
-		},
 		chunkFilename: "[name].js",
 	},
 	module: {
@@ -160,7 +157,7 @@ module.exports = {
 	devServer: {
 		historyApiFallback: true,
 		allowedHosts: "all",
-		port: 3000,
+		port: 5000,
 		liveReload: true,
 		server: "https",
 		client: {

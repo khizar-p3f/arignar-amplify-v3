@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Breadcrumb, ConfigProvider, Layout, theme } from "antd";
+import { Breadcrumb, ConfigProvider, Layout, Spin, theme } from "antd";
 
 import { teachersAPI } from "./api";
 
@@ -10,6 +10,7 @@ import "./index.less";
 import ArignarTeacherHeader from "./layout/header";
 import { Router } from "@gatsbyjs/reach-router";
 import TeacherDashboard from "./pages";
+import TeachersManageClass from "./pages/manage_class";
 
 const { Header, Content, Footer } = Layout;
 
@@ -46,9 +47,18 @@ const ArignarTeacherMainPage = (props) => {
 				<ArignarTeacherSider />
 				<Layout>
 					<ArignarTeacherHeader user={props?.user} />
-					<Router>
-						<TeacherDashboard path="/*" user={props.user} />
-					</Router>
+					{subjectLoaded ? (
+						<div className="content-section">
+							<Router>
+								<TeacherDashboard path="/*" user={props.user} />
+								<TeachersManageClass path="/manage_class" user={props.user} />
+							</Router>
+						</div>
+					) : (
+						<div className="content-section">
+							<Spin />
+						</div>
+					)}
 					<Footer
 						style={{
 							textAlign: "center",

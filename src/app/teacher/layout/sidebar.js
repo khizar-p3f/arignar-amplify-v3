@@ -1,19 +1,32 @@
 import React, { useState } from "react";
-import { DesktopOutlined, FileOutlined, PieChartOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
+import {
+	DesktopOutlined,
+	FileOutlined,
+	PieChartOutlined,
+	TeamOutlined,
+	UserOutlined,
+	AccountBookOutlined,
+} from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 import logo from "../../assets/images/logo.png";
 import logoCollapsed from "../../assets/images/logo-sm.png";
+import { Link } from "@gatsbyjs/reach-router";
 
 const { Sider } = Layout;
 
 const items = [
 	{
 		key: "1",
-		label: "Dashboard",
+		label: <Link to="/">Dashboard</Link>,
 		icon: <PieChartOutlined />,
 	},
 	{
-		divided: true,
+		type: "divider",
+	},
+	{
+		key: "manageClass",
+		label: <Link to="/manage_class">Manage Class</Link>,
+		icon: <AccountBookOutlined />,
 	},
 	{
 		key: "2",

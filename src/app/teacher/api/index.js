@@ -63,4 +63,77 @@ export const teachersAPI = {
 			return error;
 		}
 	},
+	listAllClassesAPI: async () => {
+		const listAllClassesQuery = `  query ListClasses(
+      $filter: ModelClassesFilterInput
+      $limit: Int
+      $nextToken: String
+    ) {
+      listClasses(filter: $filter, limit: $limit, nextToken: $nextToken) {
+        items {
+          id
+          Name
+          Description
+          IsActive
+          ImageURL
+          ImageType
+          SubjectID
+          LevelID
+          RegistrationCode
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+    }`;
+		try {
+			const response = await API.graphql({ query: listAllClassesQuery });
+			return response;
+		} catch (error) {
+			console.log(error);
+			return error;
+		}
+	},
+	addClassAPI: async (classData) => {
+		const addClassQuery = `mutation CreateClasses(
+      $input: CreateClassesInput!
+      $condition: ModelClassesConditionInput
+    ) {
+      createClasses(input: $input, condition: $condition) {
+        id
+        Name
+        Description
+        IsActive
+        ImageURL
+        ImageType
+        SubjectID
+        LevelID
+        RegistrationCode
+        createdAt
+        updatedAt
+        owner
+      }
+    }`;
+		try {
+			const response = await API.graphql({
+				query: addClassQuery,
+				variables: {
+					input: classData,
+				},
+			});
+			return response;
+		} catch (error) {
+			console.log(error);
+			return error;
+		}
+	},
+};
+
+export const getNameById = {
+	getSubjectNameById: async (id, subjects) => {
+		const subject = subjects.find((subject) => subject.id === id);
+		console.log(subject.Name);
+		return subject.Name;
+	},
 };

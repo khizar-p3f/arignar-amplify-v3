@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import ArignarSigninPage from "./login";
 import ArignarTeacherMainPage from "./teacher";
-import { navigate } from "@gatsbyjs/reach-router";
 
 const ArignarMainPage = () => {
 	const user = useSelector((state) => state.user);

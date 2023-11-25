@@ -5,6 +5,10 @@ const initialState = {
 		isLoaded: false,
 		data: [],
 	},
+	classes: {
+		isLoaded: false,
+		data: [],
+	},
 };
 
 export const teacherSlice = createSlice({
@@ -20,9 +24,18 @@ export const teacherSlice = createSlice({
 				},
 			};
 		},
+		updateClassReducer: (state, action) => {
+			return {
+				...state,
+				classes: {
+					isLoaded: true,
+					data: action.payload,
+				},
+			};
+		},
 	},
 });
 // Action creators are generated for each case reducer function
-export const { updateSubjectsReducer } = teacherSlice.actions;
+export const { updateSubjectsReducer, updateClassReducer } = teacherSlice.actions;
 
 export default teacherSlice.reducer;
