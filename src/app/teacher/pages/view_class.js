@@ -370,18 +370,8 @@ const AssignmentsTabView = ({ Assignments, subjects, classData }) => {
 									title="questions"
 									description={
 										<Space direction="vertical">
-											{
-												_.find(subjects?.data, (subject) => subject.id === classData?.SubjectID)
-												.Levels.items.find((level) => level.id === classData?.LevelID)
-												.Chapters.items.find((chapter) => chapter.id === selectedChapter)
-												.Questions.items.map((question) => (
-													<Select.Option key={question.id} value={question.id} label={question.LocalizedName}>
-														{question.LocalizedDescription}
-													</Select.Option>
-												))
-											}
 											{item?.Questions?.map((question) => (
-												
+												<Typography.Text key={question}>{question}</Typography.Text>
 											))}
 										</Space>
 									}
