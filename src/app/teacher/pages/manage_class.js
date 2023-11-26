@@ -28,8 +28,15 @@ import { getNameById, teachersAPI } from "../api";
 import { updateClassReducer } from "../../../store/reducers/teacher";
 import { useState } from "react";
 import PageHeader from "../components/page-header";
-import { FileAddOutlined, OrderedListOutlined, TableOutlined, DatabaseOutlined } from "@ant-design/icons";
+import {
+	FileAddOutlined,
+	OrderedListOutlined,
+	TableOutlined,
+	UserOutlined,
+	CustomerServiceOutlined,
+} from "@ant-design/icons";
 import classRoom from "../../assets/images/class-room.png";
+import { Link } from "@gatsbyjs/reach-router";
 
 const TeachersManageClass = () => {
 	const dispatch = useDispatch();
@@ -146,18 +153,7 @@ const TeachersManageClass = () => {
 
 	// to get all the classes
 	useEffect(() => {
-		if (!classes.isLoaded) {
-			teachersAPI.listAllClassesAPI().then((response) => {
-				dispatch(
-					updateClassReducer({
-						isLoaded: true,
-						data: response?.data?.listClasses?.items || [],
-					})
-				);
-				setClassLoaded(true);
-				setData(response?.data?.listClasses?.items || []);
-			});
-		} else {
+		if (classes.isLoaded) {
 			setData(classes.data);
 			setClassLoaded(true);
 		}
@@ -305,83 +301,114 @@ const TeachersManageClass = () => {
 							</Row>
 
 							{/* Content view based on user selection */}
-							<Row gutter={[16, 16]} justify="start" align="middle">
+							<Row gutter={[24, 16]} justify="start" align="middle">
 								{view === "list" ? (
 									data.length > 0 ? (
-										data.map((item) => (
-											<Col span={8} key={item.id}>
-												<Badge.Ribbon
-													text={item.IsActive ? "Active Class Room" : "Inactive Class Room"}
-													color={item.IsActive ? "green" : "red"}
-													placement="end"
-												>
-													<Card
-														actions={[
-															<Button type="link" key={1} onClick={() => editClassHandler(item)}>
-																Edit
-															</Button>,
-															<Typography.Text key={2}>Delete</Typography.Text>,
-														]}
-														bordered
-														style={{
-															cursor: "pointer",
-														}}
+										data.map((item) => {
+											let subject = teacher.subjects.data.find((subject) => subject.id === item.SubjectID)?.Name;
+											let levels = teacher.subjects.data
+												.find((subject) => subject.id === item.SubjectID)
+												.Levels.items.find((level) => level.id === item.LevelID)?.Name;
+											return (
+												<Col span={6} key={item.id}>
+													<Badge.Ribbon
+														text={item.IsActive ? "Active Class Room" : "Inactive Class Room"}
+														color={item.IsActive ? "green" : "red"}
+														placement="end"
 													>
-														<Flex gap={0} vertical justify="start" align="flex-start">
-															<Typography.Title level={4}>{item.Name}</Typography.Title>
-															<div
-																style={{
-																	minHeight: 80,
-																	width: "100%",
-																	borderBottom: "solid 1px #ddd",
-																	marginBottom: 5,
-																}}
-															>
-																<Typography.Paragraph ellipsis={{ rows: 2, tooltip: item.Description }}>
-																	{item.Description}
-																</Typography.Paragraph>
-															</div>
-															<Flex
-																gap={10}
-																style={{ width: "100%", borderBottom: "solid 1px #ddd" }}
-																justify="start"
-																align="flex-start"
-															>
-																<span>
-																	{teacher.subjects.data.find((subject) => subject.id === item.SubjectID)?.Name}
-																</span>
-																<Divider
-																	type="vertical"
-																	style={{
-																		height: 20,
-																		margin: "0 5px",
-																	}}
-																/>
-																<span>
-																	{
-																		teacher.subjects.data
-																			.find((subject) => subject.id === item.SubjectID)
-																			.Levels.items.find((level) => level.id === item.LevelID)?.Name
-																	}
-																</span>
+														<Card
+															actions={[
+																<Button type="link" key={1} onClick={() => editClassHandler(item)}>
+																	Edit
+																</Button>,
+																<Typography.Text key={2}>Delete</Typography.Text>,
+															]}
+															bordered
+															style={{
+																cursor: "pointer",
+															}}
+														>
+															<Flex gap={0} vertical justify="start" align="flex-start">
+																<Link to={`/class/${item.id}`} style={{ textDecoration: "none", width: "100%" }}>
+																	<Typography.Title level={4}>{item.Name}</Typography.Title>
+																	<div
+																		style={{
+																			minHeight: 80,
+																			width: "100%",
+																			borderBottom: "solid 1px #ddd",
+																			marginBottom: 5,
+																		}}
+																	>
+																		<Typography.Paragraph ellipsis={{ rows: 2, tooltip: item.Description }}>
+																			{item.Description}
+																		</Typography.Paragraph>
+																	</div>
+																</Link>
+																<Flex
+																	gap={10}
+																	style={{ width: "100%", borderBottom: "solid 1px #ddd" }}
+																	justify="start"
+																	align="flex-start"
+																>
+																	<Typography.Paragraph ellipsis={{ rows: 1, tooltip: subject }}>
+																		{subject}
+																	</Typography.Paragraph>
+																	<Divider
+																		type="vertical"
+																		style={{
+																			height: 20,
+																			margin: "0 5px",
+																		}}
+																	/>
+																	<Typography.Paragraph ellipsis={{ rows: 1, tooltip: levels }}>
+																		{levels}
+																	</Typography.Paragraph>
+																</Flex>
+																<Flex
+																	gap={10}
+																	style={{ width: "100%", marginTop: 10, borderBottom: "solid 1px #ddd" }}
+																	justify="start"
+																	align="flex-start"
+																>
+																	<Space>
+																		<span>Registration Code:</span>
+																		<span>{item?.RegistrationCode || ""}</span>
+																	</Space>
+																</Flex>
+																<Flex
+																	gap={10}
+																	style={{ width: "100%", marginTop: 10 }}
+																	justify="start"
+																	align="flex-start"
+																>
+																	<Space>
+																		<Avatar icon={<UserOutlined style={{ height: 25 }} />} size={32} />
+																		<Space>
+																			<span> Students:</span>
+																			<span>{item?.Students?.items?.length || 0}</span>
+																		</Space>
+																	</Space>
+																</Flex>
+																<Flex
+																	gap={10}
+																	style={{ width: "100%", marginTop: 10 }}
+																	justify="start"
+																	align="flex-start"
+																>
+																	<Space>
+																		<Avatar icon={<CustomerServiceOutlined style={{ height: 25 }} />} size={32} />
+																		<Space>
+																			<span> Assignments:</span>
+																			<span>{item?.Assignments?.items?.length || 0}</span>
+																		</Space>
+																	</Space>
+																</Flex>
 															</Flex>
-															<Flex
-																gap={10}
-																style={{ width: "100%", marginTop: 10 }}
-																justify="start"
-																align="flex-start"
-															>
-																<Space>
-																	<span>Registration Code:</span>
-
-																	<span>{item?.RegistrationCode || ""}</span>
-																</Space>
-															</Flex>
-														</Flex>
-													</Card>
-												</Badge.Ribbon>
-											</Col>
-										))
+														</Card>
+													</Badge.Ribbon>
+												</Col>
+											);
+										})
 									) : (
 										<Col span={24}>
 											<Badge.Ribbon text="No Class Found" placement="start">

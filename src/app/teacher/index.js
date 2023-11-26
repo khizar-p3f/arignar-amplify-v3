@@ -4,22 +4,24 @@ import { Breadcrumb, ConfigProvider, Layout, Spin, theme } from "antd";
 import { teachersAPI } from "./api";
 
 import { useDispatch, useSelector } from "react-redux";
-import { updateSubjectsReducer } from "../../store/reducers/teacher";
+import { updateClassReducer, updateSubjectsReducer } from "../../store/reducers/teacher";
 import ArignarTeacherSider from "./layout/sidebar";
 import "./index.less";
 import ArignarTeacherHeader from "./layout/header";
 import { Router } from "@gatsbyjs/reach-router";
 import TeacherDashboard from "./pages";
 import TeachersManageClass from "./pages/manage_class";
+import TeacherViewClass from "./pages/view_class";
 
 const { Header, Content, Footer } = Layout;
 
 const ArignarTeacherMainPage = (props) => {
 	const dispatch = useDispatch();
 	const teacher = useSelector((state) => state.teacher);
-	const { subjects } = teacher;
+	const { subjects, classes } = teacher;
 	const [subjectLoaded, setSubjectLoaded] = useState(false);
 	const { token } = theme.useToken();
+
 	useEffect(() => {
 		if (!subjects.isLoaded) {
 			teachersAPI.listAllSubjectsAPI().then((response) => {
@@ -27,7 +29,18 @@ const ArignarTeacherMainPage = (props) => {
 				setSubjectLoaded(true);
 			});
 		}
-	}, [subjects.isLoaded]);
+		if (!classes.isLoaded) {
+			teachersAPI.listAllClassesAPI().then((response) => {
+				dispatch(
+					updateClassReducer({
+						isLoaded: true,
+						data: response?.data?.listClasses?.items || [],
+					})
+				);
+			});
+		}
+	}, [subjects.isLoaded, classes.isLoaded]);
+
 	return (
 		<ConfigProvider
 			theme={{
@@ -53,6 +66,7 @@ const ArignarTeacherMainPage = (props) => {
 							<Router>
 								<TeacherDashboard path="/*" user={props.user} />
 								<TeachersManageClass path="/manage_class" user={props.user} />
+								<TeacherViewClass path="/class/:id/" user={props.user} />
 							</Router>
 						</div>
 					) : (

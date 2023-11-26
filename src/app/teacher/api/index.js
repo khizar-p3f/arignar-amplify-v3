@@ -65,7 +65,7 @@ export const teachersAPI = {
           }
           `;
 		try {
-			const response = await API.graphql({ query: listAllSubjectsQuery });
+			const response = await API.graphql({ query: listAllSubjectsQuery, authMode: "AMAZON_COGNITO_USER_POOLS" });
 			return response;
 		} catch (error) {
 			console.log(error);
@@ -73,27 +73,7 @@ export const teachersAPI = {
 		}
 	},
 	listAllClassesAPI: async () => {
-		const listAllClassesQuery = `  query ListClasses {
-      listAssignments {
-        items {
-          id
-          Name
-          Description
-          IsActive
-          ImageURL
-          ImageType
-          SubjectID
-          LevelID
-          DueDate
-          Status
-          Questions
-          createdAt
-          updatedAt
-          classesAssignmentsId
-          owner
-          __typename
-        }
-      }
+		const listAllClassesQuery = `  query ListClasses {     
       listClasses{
         items {
           id
@@ -105,6 +85,26 @@ export const teachersAPI = {
           SubjectID
           LevelID
           RegistrationCode
+          Assignments {
+            items {
+              id
+              Name
+              Description
+              IsActive
+              ImageURL
+              ImageType
+              SubjectID
+              LevelID
+              DueDate
+              Status
+              Questions
+              createdAt
+              updatedAt
+              classesAssignmentsId
+              owner
+              __typename
+            }
+          }
           Students{
             items {
               id
@@ -124,6 +124,7 @@ export const teachersAPI = {
               owner
             }
           }
+          
           createdAt
           updatedAt
           owner
@@ -132,7 +133,7 @@ export const teachersAPI = {
       }
     }`;
 		try {
-			const response = await API.graphql({ query: listAllClassesQuery });
+			const response = await API.graphql({ query: listAllClassesQuery, authMode: "AMAZON_COGNITO_USER_POOLS" });
 			return response;
 		} catch (error) {
 			console.log(error);
@@ -143,6 +144,7 @@ export const teachersAPI = {
 		try {
 			const response = await API.graphql({
 				query: mutations.createClasses,
+				authMode: "AMAZON_COGNITO_USER_POOLS",
 				variables: {
 					input: classData,
 				},
@@ -157,8 +159,24 @@ export const teachersAPI = {
 		try {
 			const response = await API.graphql({
 				query: mutations.updateClasses,
+				authMode: "AMAZON_COGNITO_USER_POOLS",
 				variables: {
 					input: classData,
+				},
+			});
+			return response;
+		} catch (error) {
+			console.log(error);
+			return error;
+		}
+	},
+	createAssignmentAPI: async (assignmentData) => {
+		try {
+			const response = await API.graphql({
+				query: mutations.createAssignments,
+				authMode: "AMAZON_COGNITO_USER_POOLS",
+				variables: {
+					input: assignmentData,
 				},
 			});
 			return response;

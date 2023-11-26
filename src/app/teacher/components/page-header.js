@@ -1,8 +1,9 @@
-import { Breadcrumb, Button, Col, Flex, Row, Typography } from "antd";
+import { Breadcrumb, Button, Col, Flex, Row, Space, Typography } from "antd";
 import React from "react";
 import { ArrowLeftOutlined, SettingOutlined } from "@ant-design/icons";
 import "./index.less";
 const PageHeader = ({ BreadcrumbItems, header, descriptions }) => {
+	const trimdescriptions = descriptions?.length > 100 ? descriptions?.substring(0, 100) + "..." : descriptions;
 	return (
 		<div className="wiget-page-header">
 			<div className="breadcrumb-container">
@@ -14,8 +15,8 @@ const PageHeader = ({ BreadcrumbItems, header, descriptions }) => {
 				></Breadcrumb>
 			</div>
 			<div className="page-header-container">
-				<Row gutter={[16, 16]} justify="space-between" align="middle" className="page-header-content">
-					<Col flex={0}>
+				<Row gutter={[16, 16]} justify="start" align="middle" className="page-header-content">
+					<Col span={1}>
 						<Button
 							type="default"
 							size="large"
@@ -24,13 +25,24 @@ const PageHeader = ({ BreadcrumbItems, header, descriptions }) => {
 							onClick={() => window.history.back()}
 						/>
 					</Col>
-					<Col flex={1}>
-						<Flex vertical gap={0}>
-							<Typography.Title level={2}>{header}</Typography.Title>
-							<Typography.Text>{descriptions}</Typography.Text>
-						</Flex>
+					<Col span={22}>
+						<Space direction="vertical" size={0}>
+							<Typography.Title level={3}>{header}</Typography.Title>
+
+							<Typography.Paragraph
+								style={{
+									color: "#6c757d",
+								}}
+								ellipsis={{
+									rows: 2,
+									tooltip: descriptions,
+								}}
+							>
+								{trimdescriptions}
+							</Typography.Paragraph>
+						</Space>
 					</Col>
-					<Col flex={0}>
+					<Col span={1}>
 						<Button type="dashed" size="middle" icon={<SettingOutlined />} />
 					</Col>
 				</Row>
